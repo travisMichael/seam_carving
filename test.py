@@ -1,6 +1,6 @@
 from PIL import Image
 import numpy as np
-
+import time
 
 # One pitfall was figuring out how to calculate the x and y gradients
 
@@ -16,7 +16,7 @@ def x_gradient_magnitudes(image):
                 dx[i][j] = np.linalg.norm(image[i][j])
             else:
                 temp = image[i+1][j] - image[i-1][j]
-                dx[i][j] = np.sum(temp * temp)
+                dx[i][j] = np.sqrt(np.sum(temp * temp))
 
     return dx
 
@@ -32,7 +32,7 @@ def y_gradient_magnitudes(image):
                 dy[i][j] = np.linalg.norm(image[i][j])
             else:
                 temp = image[i][j+1] - image[i][j-1]
-                dy[i][j] = np.sum(temp * temp)
+                dy[i][j] = np.sqrt(np.sum(temp * temp))
 
     return dy
 
@@ -119,25 +119,41 @@ def remove_vertical_seam(image, y_map):
 
 def scale_image(image_to_scale):
 
-    # 103
-    for i in range(71):
-        print(i)
+    dx_time = 0.0
+    dy_time = 0.0
+    path_time = 0.0
+    removal_time = 0.0
+
+    # 71 + 100 + 100
+    for i in range(79):
+        start_time = time.time()
         dx = x_gradient_magnitudes(image_to_scale)
+        dx_time += time.time() - start_time
+
+        start_time = time.time()
         dy = y_gradient_magnitudes(image_to_scale)
+        dy_time += time.time() - start_time
         # dI = dx + dy
         energy_map = dx + dy
         # energy_map = gradient_magnitude(dI)
+        start_time = time.time()
         y_map = calculate_y_path_map(energy_map)
+        path_time += time.time() - start_time
+
+        start_time = time.time()
         image_to_scale = remove_vertical_seam(image_to_scale, y_map)
+        removal_time += time.time() - start_time
+
         image_new_image = Image.fromarray(image_to_scale)
         image_new_image.save("pics/islands_" + str(i) + ".png")
+        print(i, dx_time, dy_time, path_time, removal_time)
 
     return image_to_scale
 
 
 # choices = np.zeros(3, dtype=int)
 # Read image
-img = Image.open('islands_inter_2.png')
+img = Image.open('pics/islands_99.png')
 
 # img.save('island_original_copy.png')
 
