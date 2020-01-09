@@ -7,32 +7,46 @@ import time
 
 def x_gradient_magnitudes(image):
     height, width, channels = image.shape
-    # dx = np.copy(image)
-    dx = np.zeros((height, width))
 
-    for i in range(height):
-        for j in range(width):
-            if i == 0 or i == height - 1:
-                dx[i][j] = np.linalg.norm(image[i][j])
-            else:
-                temp = image[i+1][j] - image[i-1][j]
-                dx[i][j] = np.sqrt(np.sum(temp * temp))
+    a = np.delete(image, obj=[0, 1], axis=0)
+    b = np.delete(image, obj=[height - 1, height - 2], axis=0)
+
+    diff = (a - b)
+
+    squared = diff * diff
+
+    sum = np.sum(squared, axis=2)
+
+    root = np.sqrt(sum)
+
+    first_row = np.sqrt(np.sum(image[0]*image[0], axis=1))
+    final_row = np.sqrt(np.sum(image[height - 1]*image[height - 1], axis=1))
+
+    c = np.vstack((first_row, root))
+    dx = np.vstack((c, final_row))
 
     return dx
 
 
 def y_gradient_magnitudes(image):
     height, width, channels = image.shape
-    # dy = np.copy(image)
-    dy = np.zeros((height, width))
 
-    for i in range(height):
-        for j in range(width):
-            if j == 0 or j == width - 1:
-                dy[i][j] = np.linalg.norm(image[i][j])
-            else:
-                temp = image[i][j+1] - image[i][j-1]
-                dy[i][j] = np.sqrt(np.sum(temp * temp))
+    a = np.delete(image, obj=[0, 1], axis=1)
+    b = np.delete(image, obj=[width - 1, width - 2], axis=1)
+
+    diff = (a - b)
+
+    squared = diff * diff
+
+    sum = np.sum(squared, axis=2)
+
+    root = np.sqrt(sum)
+
+    first_column = np.expand_dims(np.sqrt(np.sum(image[:, 0]*image[:, 0], axis=1)), axis=1)
+    last_colum = np.expand_dims(np.sqrt(np.sum(image[:, width - 1]*image[:, width - 1], axis=1)), axis=1)
+
+    c = np.hstack((first_column, root))
+    dy = np.hstack((c, last_colum))
 
     return dy
 
@@ -53,6 +67,7 @@ def y_gradient_magnitudes(image):
 def calculate_y_path_map(energy_map):
     height, width = energy_map.shape
     y_map = np.zeros((height, width))
+    choices = np.zeros(3)
 
     for i in range(height):
         for j in range(width):
@@ -61,7 +76,10 @@ def calculate_y_path_map(energy_map):
             else:
                 left = np.max([j - 1, 0])
                 right = np.min([j + 1, width - 1])
-                y_map[i][j] = energy_map[i][j] + np.min([y_map[i-1][left], y_map[i-1][j], y_map[i-1][right]])
+                choices[0] = y_map[i-1][left]
+                choices[1] = y_map[i-1][j]
+                choices[2] = y_map[i-1][right]
+                y_map[i][j] = energy_map[i][j] + np.min(choices)
 
     return y_map
 
@@ -125,7 +143,7 @@ def scale_image(image_to_scale):
     removal_time = 0.0
 
     # 71 + 100 + 100
-    for i in range(79):
+    for i in range(62):
         start_time = time.time()
         dx = x_gradient_magnitudes(image_to_scale)
         dx_time += time.time() - start_time
@@ -153,7 +171,7 @@ def scale_image(image_to_scale):
 
 # choices = np.zeros(3, dtype=int)
 # Read image
-img = Image.open('pics/islands_99.png')
+img = Image.open('pics/islands_16.png')
 
 # img.save('island_original_copy.png')
 
@@ -162,7 +180,7 @@ img_array = np.asarray(img)
 # prints format of image
 print(img.format)
 
-# dx = x_gradient(img_array)
+# dx = x_gradient(img_array)choices
 # dy = y_gradient(img_array)
 #
 # dI = dx + dy
