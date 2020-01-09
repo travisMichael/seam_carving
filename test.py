@@ -67,7 +67,7 @@ def y_gradient_magnitudes(image):
 def calculate_y_path_map(energy_map):
     height, width = energy_map.shape
     y_map = np.zeros((height, width))
-    c = np.zeros((3, width))
+    c = np.zeros((4, width))
     y_map[0] = energy_map[0]
 
     for i in range(1, height):
@@ -79,7 +79,7 @@ def calculate_y_path_map(energy_map):
 
         # we want to shift left
         c[0] = np.less_equal(left_shift, y_map[i-1])
-        c_0_i = np.where(c[1] == 1)
+        c_0_i = np.where(c[0] == 1)
         zero_not = np.logical_not(c[0])
 
         # we want to shift right
@@ -95,28 +95,38 @@ def calculate_y_path_map(energy_map):
 
         # if both shifting is true, then we check which shift is better
         c[2] = np.less_equal(left_shift, right_shift)
+        c[3] = np.less_equal(right_shift, left_shift)
 
         intermediate = np.logical_and(c[0], c[1])
         override_left = np.logical_and(intermediate, c[2])
         override_left_i = np.where(override_left == True)
 
+        intermediate = np.logical_and(c[0], c[1])
+        override_right = np.logical_and(intermediate, c[3])
+        override_right_i = np.where(override_right == True)
+
         np.put(y_map[i], override_left_i, left_shift[override_left_i])
+        np.put(y_map[i], override_right_i, right_shift[override_right_i])
         np.put(y_map[i], not_and_i, y_map[i-1][not_and_i])
         y_map[i] = y_map[i] + energy_map[i]
 
     # choices = np.zeros(3)
+    # old_y_map = np.zeros((height, width))
 
     # for i in range(height):
     #     for j in range(width):
     #         if i == 0:
-    #             y_map[i][j] = energy_map[i][j]
+    #             old_y_map[i][j] = energy_map[i][j]
     #         else:
     #             left = np.max([j - 1, 0])
     #             right = np.min([j + 1, width - 1])
-    #             choices[0] = y_map[i-1][left]
-    #             choices[1] = y_map[i-1][j]
-    #             choices[2] = y_map[i-1][right]
-    #             y_map[i][j] = energy_map[i][j] + np.min(choices)
+    #             choices[0] = old_y_map[i-1][left]
+    #             choices[1] = old_y_map[i-1][j]
+    #             choices[2] = old_y_map[i-1][right]
+    #             old_y_map[i][j] = energy_map[i][j] + np.min(choices)
+    #
+    #         if old_y_map[i][j] != y_map[i][j]:
+    #             print("wrong")
 
     return y_map
 
