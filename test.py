@@ -34,7 +34,7 @@ def y_gradient_magnitudes(image):
     a = np.delete(image, obj=[0, 1], axis=1)
     b = np.delete(image, obj=[width - 1, width - 2], axis=1)
 
-    diff = (a - b)
+    diff = abs(a - b)
 
     squared = diff * diff
 
@@ -67,19 +67,56 @@ def y_gradient_magnitudes(image):
 def calculate_y_path_map(energy_map):
     height, width = energy_map.shape
     y_map = np.zeros((height, width))
-    choices = np.zeros(3)
+    c = np.zeros((3, width))
+    y_map[0] = energy_map[0]
 
-    for i in range(height):
-        for j in range(width):
-            if i == 0:
-                y_map[i][j] = energy_map[i][j]
-            else:
-                left = np.max([j - 1, 0])
-                right = np.min([j + 1, width - 1])
-                choices[0] = y_map[i-1][left]
-                choices[1] = y_map[i-1][j]
-                choices[2] = y_map[i-1][right]
-                y_map[i][j] = energy_map[i][j] + np.min(choices)
+    for i in range(1, height):
+        left_shift = np.delete(y_map[i-1], 0)
+        right_shift = np.delete(y_map[i-1], width - 1)
+
+        left_shift = np.concatenate((left_shift, [np.inf]))
+        right_shift = np.concatenate(([np.inf], right_shift))
+
+        # we want to shift left
+        c[0] = np.less_equal(left_shift, y_map[i-1])
+        c_0_i = np.where(c[1] == 1)
+        zero_not = np.logical_not(c[0])
+
+        # we want to shift right
+        c[1] = np.less_equal(right_shift, y_map[i-1])
+        c_1_i = np.where(c[1] == 1)
+        one_not = np.logical_not(c[1])
+
+        np.put(y_map[i], c_1_i, right_shift[c_1_i])
+        np.put(y_map[i], c_0_i, left_shift[c_0_i])
+        # indices to keep original values
+        not_and = np.logical_and(zero_not, one_not)
+        not_and_i = np.where(not_and == True)
+
+        # if both shifting is true, then we check which shift is better
+        c[2] = np.less_equal(left_shift, right_shift)
+
+        intermediate = np.logical_and(c[0], c[1])
+        override_left = np.logical_and(intermediate, c[2])
+        override_left_i = np.where(override_left == True)
+
+        np.put(y_map[i], override_left_i, left_shift[override_left_i])
+        np.put(y_map[i], not_and_i, y_map[i-1][not_and_i])
+        y_map[i] = y_map[i] + energy_map[i]
+
+    # choices = np.zeros(3)
+
+    # for i in range(height):
+    #     for j in range(width):
+    #         if i == 0:
+    #             y_map[i][j] = energy_map[i][j]
+    #         else:
+    #             left = np.max([j - 1, 0])
+    #             right = np.min([j + 1, width - 1])
+    #             choices[0] = y_map[i-1][left]
+    #             choices[1] = y_map[i-1][j]
+    #             choices[2] = y_map[i-1][right]
+    #             y_map[i][j] = energy_map[i][j] + np.min(choices)
 
     return y_map
 
@@ -143,7 +180,7 @@ def scale_image(image_to_scale):
     removal_time = 0.0
 
     # 71 + 100 + 100
-    for i in range(62):
+    for i in range(350):
         start_time = time.time()
         dx = x_gradient_magnitudes(image_to_scale)
         dx_time += time.time() - start_time
@@ -162,16 +199,17 @@ def scale_image(image_to_scale):
         image_to_scale = remove_vertical_seam(image_to_scale, y_map)
         removal_time += time.time() - start_time
 
-        image_new_image = Image.fromarray(image_to_scale)
-        image_new_image.save("pics/islands_" + str(i) + ".png")
-        print(i, dx_time, dy_time, path_time, removal_time)
+        if i % 10 == 0:
+            image_new_image = Image.fromarray(image_to_scale)
+            image_new_image.save("pics/islands_" + str(i) + ".png")
+            print(i, dx_time, dy_time, path_time, removal_time)
 
     return image_to_scale
 
 
 # choices = np.zeros(3, dtype=int)
 # Read image
-img = Image.open('pics/islands_16.png')
+img = Image.open('island_original.png')
 
 # img.save('island_original_copy.png')
 
