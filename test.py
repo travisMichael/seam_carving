@@ -6,48 +6,64 @@ import cv2
 # One pitfall was figuring out how to calculate the x and y gradients
 
 
-def x_gradient_magnitudes(image):
+def y_gradient_magnitudes(image):
     height, width, channels = image.shape
 
     a = np.delete(image, obj=[0, 1], axis=0)
     b = np.delete(image, obj=[height - 1, height - 2], axis=0)
 
     diff = (a - b)
-
     squared = diff * diff
-
     sum = np.sum(squared, axis=2)
-
     root = np.sqrt(sum)
 
-    first_row = np.sqrt(np.sum(image[0]*image[0], axis=1))
-    final_row = np.sqrt(np.sum(image[height - 1]*image[height - 1], axis=1))
+    first_row_diff = image[0] - image[1]
+    last_row_diff = image[height - 1] - image[height - 2]
 
-    c = np.vstack((first_row, root))
-    dx = np.vstack((c, final_row))
+    first_row_squared = first_row_diff * first_row_diff
+    first_row_sum = np.sum(first_row_squared, axis=1)
+    first_row_root = np.sqrt(first_row_sum)
+
+    last_row_squared = last_row_diff * last_row_diff
+    last_row_sum = np.sum(last_row_squared, axis=1)
+    last_row_root = np.sqrt(last_row_sum)
+
+    # first_row = np.sqrt(np.sum(image[0]*image[0], axis=1))
+    # final_row = np.sqrt(np.sum(image[height - 1]*image[height - 1], axis=1))
+
+    c = np.vstack((first_row_root, root))
+    dx = np.vstack((c, last_row_root))
 
     return dx
 
 
-def y_gradient_magnitudes(image):
+def x_gradient_magnitudes(image):
     height, width, channels = image.shape
 
     a = np.delete(image, obj=[0, 1], axis=1)
     b = np.delete(image, obj=[width - 1, width - 2], axis=1)
 
     diff = abs(a - b)
-
     squared = diff * diff
-
     sum = np.sum(squared, axis=2)
-
     root = np.sqrt(sum)
 
-    first_column = np.expand_dims(np.sqrt(np.sum(image[:, 0]*image[:, 0], axis=1)), axis=1)
-    last_colum = np.expand_dims(np.sqrt(np.sum(image[:, width - 1]*image[:, width - 1], axis=1)), axis=1)
+    first_column_diff = image[:, 0, :] - image[:, 1, :]
+    last_column_diff = image[:, width - 1, :] - image[:, width - 2, :]
+
+    first_column_squared = first_column_diff * first_column_diff
+    first_column_sum = np.sum(first_column_squared, axis=1)
+    first_column_root = np.sqrt(first_column_sum)
+
+    last_column_squared = last_column_diff * last_column_diff
+    last_column_sum = np.sum(last_column_squared, axis=1)
+    last_column_root = np.sqrt(last_column_sum)
+
+    first_column = np.expand_dims(first_column_root, axis=1)
+    last_column = np.expand_dims(last_column_root, axis=1)
 
     c = np.hstack((first_column, root))
-    dy = np.hstack((c, last_colum))
+    dy = np.hstack((c, last_column))
 
     return dy
 
@@ -101,32 +117,32 @@ def calculate_y_path_map(energy_map):
     return y_map
 
 
-def calculate_x_path_map(energy_map):
-    width, height = energy_map.shape
-    x_map = np.zeros((width, height))
+# def calculate_x_path_map(energy_map):
+#     width, height = energy_map.shape
+#     x_map = np.zeros((width, height))
+#
+#     for i in range(height):
+#         for j in range(width):
+#             if i == 0:
+#                 x_map[j][i] = energy_map[j][i]
+#             else:
+#                 upper = np.max([i - 1, 0])
+#                 lower = np.min([i + 1, height - 1])
+#                 x_map[j][i] = energy_map[j][i] + np.min([x_map[j-1, upper], x_map[j-1, i], x_map[j-1, lower]])
+#
+#     return x_map
 
-    for i in range(height):
-        for j in range(width):
-            if i == 0:
-                x_map[j][i] = energy_map[j][i]
-            else:
-                upper = np.max([i - 1, 0])
-                lower = np.min([i + 1, height - 1])
-                x_map[j][i] = energy_map[j][i] + np.min([x_map[j-1, upper], x_map[j-1, i], x_map[j-1, lower]])
 
-    return x_map
-
-
-def calculate_energy(image):
-    b_0 = image[:,:,0]
-    c_0 = image[:,:,0]
-    d_0 = image[:,:,0]
-
-    b_energy_0 = np.absolute(cv2.Scharr(b_0, -1, 1, 0)) + np.absolute(cv2.Scharr(b_0, -1, 0, 1))
-    c_energy_0 = np.absolute(cv2.Scharr(c_0, -1, 1, 0)) + np.absolute(cv2.Scharr(c_0, -1, 0, 1))
-    d_energy_0 = np.absolute(cv2.Scharr(d_0, -1, 1, 0)) + np.absolute(cv2.Scharr(d_0, -1, 0, 1))
-
-    return b_energy_0 + c_energy_0 + d_energy_0
+# def calculate_energy(image):
+#     b_0 = image[:,:,0]
+#     c_0 = image[:,:,0]
+#     d_0 = image[:,:,0]
+#
+#     b_energy_0 = np.absolute(cv2.Scharr(b_0, -1, 1, 0)) + np.absolute(cv2.Scharr(b_0, -1, 0, 1))
+#     c_energy_0 = np.absolute(cv2.Scharr(c_0, -1, 1, 0)) + np.absolute(cv2.Scharr(c_0, -1, 0, 1))
+#     d_energy_0 = np.absolute(cv2.Scharr(d_0, -1, 1, 0)) + np.absolute(cv2.Scharr(d_0, -1, 0, 1))
+#
+#     return b_energy_0 + c_energy_0 + d_energy_0
 
 
 def delete_seam(image, seam_idx):
@@ -194,6 +210,10 @@ def calculate_seam(image, y_map):
 #     new_image = intermediate_image.reshape((height, width - 1, 3))
 #
 #     return new_image
+
+def scale_image_up(image_to_scale):
+
+    pass
 
 
 def scale_image(image_to_scale):
