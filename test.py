@@ -4,8 +4,8 @@ import time
 import cv2
 from algo import SeamCarver
 
-# One pitfall was figuring out how to calculate the x and y gradients
 
+# One pitfall was figuring out how to calculate the x and y gradients
 
 def y_gradient_magnitudes(image):
     height, width, channels = image.shape
@@ -14,26 +14,23 @@ def y_gradient_magnitudes(image):
     b = np.delete(image, obj=[height - 1, height - 2], axis=0)
 
     diff = (a - b)
-    # squared = diff * diff
-    sum = np.sum(diff, axis=2)
-    # root = np.sqrt(sum)
+    squared = diff * diff
+    sum = np.sum(squared, axis=2)
+    root = np.sqrt(sum)
 
     first_row_diff = abs(image[0] - image[1])
     last_row_diff = abs(image[height - 1] - image[height - 2])
 
-    # first_row_squared = first_row_diff * first_row_diff
-    first_row_sum = np.sum(first_row_diff, axis=1)
-    # first_row_root = np.sqrt(first_row_sum)
+    first_row_squared = first_row_diff * first_row_diff
+    first_row_sum = np.sum(first_row_squared, axis=1)
+    first_row_root = np.sqrt(first_row_sum)
 
-    # last_row_squared = last_row_diff * last_row_diff
-    last_row_sum = np.sum(last_row_diff, axis=1)
-    # last_row_root = np.sqrt(last_row_sum)
+    last_row_squared = last_row_diff * last_row_diff
+    last_row_sum = np.sum(last_row_squared, axis=1)
+    last_row_root = np.sqrt(last_row_sum)
 
-    # first_row = np.sqrt(np.sum(image[0]*image[0], axis=1))
-    # final_row = np.sqrt(np.sum(image[height - 1]*image[height - 1], axis=1))
-
-    c = np.vstack((first_row_sum, sum))
-    dx = np.vstack((c, last_row_sum))
+    c = np.vstack((first_row_root, root))
+    dx = np.vstack((c, last_row_root))
 
     return dx
 
@@ -45,36 +42,37 @@ def x_gradient_magnitudes(image):
     b = np.delete(image, obj=[width - 1, width - 2], axis=1)
 
     diff = abs(a - b)
-    # squared = diff * diff
-    sum = np.sum(diff, axis=2)
-    # root = np.sqrt(sum)
+    squared = diff * diff
+    sum = np.sum(squared, axis=2)
+    root = np.sqrt(sum)
 
     first_column_diff = abs(image[:, 0, :] - image[:, 1, :])
     last_column_diff = abs(image[:, width - 1, :] - image[:, width - 2, :])
 
-    # first_column_squared = first_column_diff * first_column_diff
-    first_column_sum = np.sum(first_column_diff, axis=1)
-    # first_column_root = np.sqrt(first_column_sum)
+    first_column_squared = first_column_diff * first_column_diff
+    first_column_sum = np.sum(first_column_squared, axis=1)
+    first_column_root = np.sqrt(first_column_sum)
 
-    # last_column_squared = last_column_diff * last_column_diff
-    last_column_sum = np.sum(last_column_diff, axis=1)
-    # last_column_root = np.sqrt(last_column_sum)
+    last_column_squared = last_column_diff * last_column_diff
+    last_column_sum = np.sum(last_column_squared, axis=1)
+    last_column_root = np.sqrt(last_column_sum)
 
-    first_column = np.expand_dims(first_column_sum, axis=1)
-    last_column = np.expand_dims(last_column_sum, axis=1)
+    first_column = np.expand_dims(first_column_root, axis=1)
+    last_column = np.expand_dims(last_column_root, axis=1)
 
-    c = np.hstack((first_column, sum))
+    c = np.hstack((first_column, root))
     dy = np.hstack((c, last_column))
 
     return dy
 
 
-def calculate_y_path_map(energy_map):
+def calculate_optimal_energy_map(energy_map):
     height, width = energy_map.shape
     y_map = np.zeros((height, width))
     c = np.zeros((4, width))
     y_map[0] = energy_map[0]
 
+    # kind of messy, but the vectorized code allows us to remove the nested for loop from the dynamic programming step
     for i in range(1, height):
         left_shift = np.delete(y_map[i-1], 0)
         right_shift = np.delete(y_map[i-1], width - 1)
@@ -118,15 +116,6 @@ def calculate_y_path_map(energy_map):
     return y_map
 
 
-def cumulative_map_backward(energy_map):
-    m, n = energy_map.shape
-    output = np.copy(energy_map)
-    for row in range(1, m):
-        for col in range(n):
-            output[row, col] = \
-                energy_map[row, col] + np.amin(output[row - 1, max(col - 1, 0): min(col + 2, n - 1)])
-    return output
-
 # def calculate_x_path_map(energy_map):
 #     width, height = energy_map.shape
 #     x_map = np.zeros((width, height))
@@ -143,24 +132,6 @@ def cumulative_map_backward(energy_map):
 #     return x_map
 
 
-def calculate_energy(image):
-    b, g, r = cv2.split(image)
-    b_energy = np.absolute(cv2.Scharr(b, -1, 1, 0)) + np.absolute(cv2.Scharr(b, -1, 0, 1))
-    g_energy = np.absolute(cv2.Scharr(g, -1, 1, 0)) + np.absolute(cv2.Scharr(g, -1, 0, 1))
-    r_energy = np.absolute(cv2.Scharr(r, -1, 1, 0)) + np.absolute(cv2.Scharr(r, -1, 0, 1))
-    return b_energy + g_energy + r_energy
-    # b_0 = image[:,:,0]
-    # c_0 = image[:,:,1]
-    # d_0 = image[:,:,2]
-    #
-    # b_energy_0 = np.absolute(cv2.Scharr(b_0, -1, 1, 0)) + np.absolute(cv2.Scharr(b_0, -1, 0, 1))
-    # c_energy_0 = np.absolute(cv2.Scharr(c_0, -1, 1, 0)) + np.absolute(cv2.Scharr(c_0, -1, 0, 1))
-    # d_energy_0 = np.absolute(cv2.Scharr(d_0, -1, 1, 0)) + np.absolute(cv2.Scharr(d_0, -1, 0, 1))
-
-    # return b_energy_0 + c_energy_0 + d_energy_0
-
-
-
 def delete_seam(image, seam_idx):
     height, width, _ = image.shape
     output = np.zeros((height, width - 1, 3))
@@ -174,70 +145,24 @@ def delete_seam(image, seam_idx):
     return output
 
 
-# def calculate_seam(image, y_map):
-#     height, width, _ = image.shape
-#     seam = np.zeros(height, dtype=int)
-#     i = height - 1
-#     seam[i] = np.argmin(y_map[i, :])
-#     choices = np.zeros(3, dtype=int)
-#
-#     while i > 0:
-#         i = i - 1
-#         j = seam[i + 1]
-#         choices[0] = np.max([j - 1, 0])
-#         choices[1] = j
-#         choices[2] = np.min([j + 1, width - 1])
-#         a_min = np.argmin([y_map[i][choices[0]], y_map[i][j], y_map[i][choices[2]]])
-#         seam[i] = choices[a_min]
-#
-#     return seam
+def calculate_seam(y_map):
+    height, width = y_map.shape
+    seam = np.zeros(height, dtype=int)
+    i = height - 1
+    seam[i] = np.argmin(y_map[i, :])
+    choices = np.zeros(3, dtype=int)
 
+    while i > 0:
+        i = i - 1
+        j = seam[i + 1]
+        choices[0] = np.max([j - 1, 0])
+        choices[1] = j
+        choices[2] = np.min([j + 1, width - 1])
+        a_min = np.argmin([y_map[i][choices[0]], y_map[i][j], y_map[i][choices[2]]])
+        seam[i] = choices[a_min]
 
-def calculate_seam(cumulative_map):
-    m, n = cumulative_map.shape
-    output = np.zeros((m,), dtype=np.uint32)
-    output[-1] = np.argmin(cumulative_map[-1])
-    for row in range(m - 2, -1, -1):
-        prv_x = output[row + 1]
-        if prv_x == 0:
-            output[row] = np.argmin(cumulative_map[row, : 2])
-        else:
-            output[row] = np.argmin(cumulative_map[row, prv_x - 1: min(prv_x + 2, n - 1)]) + prv_x - 1
-    return output
+    return seam
 
-# def remove_vertical_seam(image, y_map):
-#     height, width, _ = image.shape
-#     to_be_removed_index = 0
-#     to_be_removed = np.zeros(height * 3)
-#     choices = np.zeros(3, dtype=int)
-#
-#     i = height - 1
-#     j = np.argmin(y_map[i, :])
-#
-#     start_index = 3 * width * i + j * 3
-#     to_be_removed[to_be_removed_index] = start_index
-#     to_be_removed[to_be_removed_index + 1] = start_index + 1
-#     to_be_removed[to_be_removed_index + 2] = start_index + 2
-#     to_be_removed_index += 3
-#
-#     while i > 0:
-#         i = i - 1
-#         choices[0] = np.max([j - 1, 0])
-#         choices[1] = j
-#         choices[2] = np.min([j + 1, width - 1])
-#         a_min = np.argmin([y_map[i][choices[0]], y_map[i][j], y_map[i][choices[2]]])
-#         j = choices[a_min]
-#         start_index = 3 * width * i + j * 3
-#         to_be_removed[to_be_removed_index] = start_index
-#         to_be_removed[to_be_removed_index + 1] = start_index + 1
-#         to_be_removed[to_be_removed_index + 2] = start_index + 2
-#         to_be_removed_index += 3
-#
-#     intermediate_image = np.delete(image, to_be_removed, None)
-#
-#     new_image = intermediate_image.reshape((height, width - 1, 3))
-#
-#     return new_image
 
 def scale_image_up(image_to_scale):
     original_image = np.copy(image_to_scale)
@@ -246,13 +171,13 @@ def scale_image_up(image_to_scale):
     path_time = 0.0
     removal_time = 0.0
 
-    seam_carver = SeamCarver("dolphin.png", 466, 350)
+    # seam_carver = SeamCarver("dolphin.png", 466, 350)
 
     seams_to_insert = []
 
     for i in range(120):
-        h, w, c = image_to_scale.shape
-        seam_carver.step()
+        # h, w, c = image_to_scale.shape
+        # seam_carver.step()
         start_time = time.time()
         dx = x_gradient_magnitudes(image_to_scale)
         dx_time += time.time() - start_time
@@ -261,24 +186,17 @@ def scale_image_up(image_to_scale):
         dy = y_gradient_magnitudes(image_to_scale)
         dy_time += time.time() - start_time
         # dI = dx + dy
-        # energy_map = dx + dy
+        energy_map = dx + dy
 
-        energy_map = calculate_energy(image_to_scale)
+        # energy_map = calculate_energy(image_to_scale)
         # energy_map = gradient_magnitude(dI)
         start_time = time.time()
         # y_map = calculate_y_path_map(energy_map)
-        y_map = cumulative_map_backward(energy_map)
+        y_map = calculate_optimal_energy_map(energy_map)
         path_time += time.time() - start_time
 
         start_time = time.time()
         seam = calculate_seam(y_map)
-        for j in range(w):
-            if y_map[h-1][j] != seam_carver.cumulative_map[h-1][j]:
-                print("j")
-
-        for j in range(len(seam)):
-            if seam[j] != seam_carver.seam_idx[j]:
-                print("j")
 
         seams_to_insert.append(seam)
         image_to_scale = delete_seam(image_to_scale, seam)
@@ -289,7 +207,6 @@ def scale_image_up(image_to_scale):
 
     print("Inserting seams..")
     image_to_scale = insert_seams(original_image, seams_to_insert)
-    cv2.imwrite("dolphin_final.png", image_to_scale)
 
     return image_to_scale
 
@@ -297,47 +214,40 @@ def scale_image_up(image_to_scale):
 def insert_seams(original_image, seams):
 
     while len(seams) > 0:
-        seam = seams.pop(0)
-        original_image = insert_single_seam(original_image, seam)
-        seams = increment_seam_indices(seams, seam)
+        next_optimal_seam = seams.pop(0)
+        original_image = insert_single_seam(original_image, next_optimal_seam)
+        seams = increment_seams(seams, next_optimal_seam)
 
     return original_image
 
 
-def insert_single_seam(image, seam):
-    m, n, _ = image.shape
-    output = np.zeros((m, n + 1, 3), dtype='uint8')
-    for row in range(m):
-        col = seam[row]
-        for ch in range(3):
-            if col == 0:
-                p = np.average(image[row, col: col + 2, ch])
-                output[row, col, ch] = image[row, col, ch]
-                output[row, col + 1, ch] = p
-                output[row, col + 1:, ch] = image[row, col:, ch]
-            else:
-                p = np.average(image[row, col - 1: col + 1, ch])
-                output[row, : col, ch] = image[row, : col, ch]
-                output[row, col, ch] = p
-                output[row, col + 1:, ch] = image[row, col:, ch]
+def insert_single_seam(temp_image, optimal_seam):
+    height, width, _ = temp_image.shape
+    new_constructed_image = np.zeros((height, width + 1, 3), dtype='uint8')
 
-    return output
+    for i in range(height):
+        column = optimal_seam[i]
+        if column != 0:
+            average = np.average(temp_image[i, column - 1: column + 1, :], axis=0)
+            new_constructed_image[i, : column, :] = temp_image[i, : column, :]
+            new_constructed_image[i, column, :] = average
+            new_constructed_image[i, column + 1:, :] = temp_image[i, column:, :]
+        else:
+            average = np.average(temp_image[i, column: column + 2, :], axis=0)
+            new_constructed_image[i, column, :] = temp_image[i, column, :]
+            new_constructed_image[i, column + 1, :] = average
+            new_constructed_image[i, column + 1:, :] = temp_image[i, column:, :]
+
+    return new_constructed_image
 
 
-# def increment_seam_indices(seams, seam):
-#     for seam_i in seams:
-#         for j in range(len(seam_i)):
-#             if seam_i[j] >= seam[j]:
-#                 seam_i[j] += 2
-#
-#     return seams
+def increment_seams(seams, seam):
+    for i_seam in seams:
+        for j in range(len(i_seam)):
+            if i_seam[j] >= seam[j]:
+                i_seam[j] += 2
 
-def increment_seam_indices(remaining_seams, current_seam):
-    output = []
-    for seam in remaining_seams:
-        seam[np.where(seam >= current_seam)] += 2
-        output.append(seam)
-    return output
+    return seams
 
 
 def scale_image(image_to_scale):
@@ -371,37 +281,35 @@ def scale_image(image_to_scale):
         #             print("Wrong")
         # energy_map = gradient_magnitude(dI)
         start_time = time.time()
-        y_map = calculate_y_path_map(energy_map)
+        y_map = calculate_optimal_energy_map(energy_map)
         path_time += time.time() - start_time
 
         start_time = time.time()
         seam = calculate_seam(y_map)
         image_to_scale = delete_seam(image_to_scale, seam)
-        # image_to_scale = remove_vertical_seam(image_to_scale, y_map)
         removal_time += time.time() - start_time
 
         if i % 10 == 0:
-            print(i, dx_time, dy_time, path_time, removal_time)
-            cv2.imwrite("pics/island_" + str(i) + ".png", image_to_scale)
+            print("Pixels removed: ", i, dx_time, dy_time, path_time, removal_time)
 
     return image_to_scale
 
 
-img = Image.open('island_original.png')
-
-img_array = cv2.imread('island_original.png').astype(np.float64)
-
-print(img.format)
-
-new_image = scale_image(img_array.astype(float))
-
-
-# img_array = cv2.imread('dolphin.png').astype(np.float64)
+# img = Image.open('island_original.png')
 #
-# new_image = scale_image_up(img_array)
+# img_array = cv2.imread('island_original.png').astype(np.float64)
 #
-# image_new_image = Image.fromarray(new_image)
+# print(img.format)
 #
-# image_new_image.show()
+# new_image = scale_image(img_array.astype(float))
+#
+# cv2.imwrite("island_result.png", new_image)
 
-print()
+
+img_array = cv2.imread('dolphin.png').astype(np.float64)
+
+new_image = scale_image_up(img_array)
+
+cv2.imwrite("dolphin_50_result.png", new_image)
+
+print("done")
