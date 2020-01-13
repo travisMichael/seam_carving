@@ -22,7 +22,9 @@ def scale_image_up(image_to_scale, number_of_seams_to_add):
         dI = dx + dy
 
         start_time = time.time()
-        aggregated_energy_map = calculate_optimal_energy_map(dI)
+        # aggregated_energy_map = calculate_optimal_energy_map(dI)
+        # aggregated_energy_map = cumulative_map_forward(image_to_scale, dI)
+        aggregated_energy_map = forward_energy(image_to_scale)
         path_time += time.time() - start_time
 
         start_time = time.time()

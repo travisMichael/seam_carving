@@ -1,4 +1,6 @@
 import numpy as np
+import cv2
+from skimage import filters, color
 
 
 # One pitfall was figuring out how to calculate the x and y gradients
@@ -153,24 +155,42 @@ def insert_seams(original_image, seams):
     return original_image
 
 
-def insert_single_seam(temp_image, optimal_seam):
+def insert_single_seam(temp_image, optimal_seam, with_mask=False):
     height, width, _ = temp_image.shape
-    new_constructed_image = np.zeros((height, width + 1, 3), dtype='uint8')
+    new_constructed_image = np.zeros((height, width + 1, 3), dtype=float)
 
     for i in range(height):
-        column = optimal_seam[i]
-        if column != 0:
-            neighboring_pixels_average = np.average(temp_image[i, column - 1: column + 1, :], axis=0)
-            new_constructed_image[i, : column, :] = temp_image[i, : column, :]
-            new_constructed_image[i, column, :] = neighboring_pixels_average
-            new_constructed_image[i, column + 1:, :] = temp_image[i, column:, :]
-        else:
-            neighboring_pixels_average = np.average(temp_image[i, column: column + 2, :], axis=0)
-            new_constructed_image[i, column, :] = temp_image[i, column, :]
-            new_constructed_image[i, column + 1, :] = neighboring_pixels_average
-            new_constructed_image[i, column + 1:, :] = temp_image[i, column:, :]
+        for j in range(width+1):
+            column = optimal_seam[i]
+            if j == column:
+                if j == 0:
+                    neighboring_pixels_average = np.average(temp_image[i, j:1, :], axis=0)
+                else:
+                    neighboring_pixels_average = np.average(temp_image[i, j - 1: j + 1, :], axis=0)
+                new_constructed_image[i, j, :] = neighboring_pixels_average
+
+            elif j > column:
+                new_constructed_image[i, j, :] = temp_image[i, j-1, :]
+            else:
+                new_constructed_image[i, j, :] = temp_image[i, j, :]
 
     return new_constructed_image
+
+    # for i in range(height):
+    #     column = optimal_seam[i]
+    #     if column != 0:
+    #         # np.array([0, 0, 255])
+    #         neighboring_pixels_average = np.average(temp_image[i, column - 1: column + 1, :], axis=0)
+    #         new_constructed_image[i, : column, :] = temp_image[i, : column, :]
+    #         new_constructed_image[i, column, :] = neighboring_pixels_average
+    #         new_constructed_image[i, column + 1:, :] = temp_image[i, column:, :]
+    #     else:
+    #         neighboring_pixels_average = np.average(temp_image[i, column: column + 2, :], axis=0)
+    #         new_constructed_image[i, column, :] = temp_image[i, column, :]
+    #         new_constructed_image[i, column + 1, :] = neighboring_pixels_average
+    #         new_constructed_image[i, column + 1:, :] = temp_image[i, column:, :]
+    #
+    # return new_constructed_image
 
 
 def increment_seams(seams, seam):
@@ -182,4 +202,78 @@ def increment_seams(seams, seam):
     return seams
 
 
+def calc_energy_map(image):
+        b, g, r = cv2.split(image)
+        b_energy = np.absolute(cv2.Scharr(b, -1, 1, 0)) + np.absolute(cv2.Scharr(b, -1, 0, 1))
+        g_energy = np.absolute(cv2.Scharr(g, -1, 1, 0)) + np.absolute(cv2.Scharr(g, -1, 0, 1))
+        r_energy = np.absolute(cv2.Scharr(r, -1, 1, 0)) + np.absolute(cv2.Scharr(r, -1, 0, 1))
+        return b_energy + g_energy + r_energy
 
+
+def forward_energy(img, flag=False):
+    height = img.shape[0]
+    width = img.shape[1]
+    I = color.rgb2gray(img)
+
+    energy = np.zeros((height, width))
+    m = np.zeros((height, width))
+
+    U = np.roll(I, 1, axis=0)
+    L = np.roll(I, 1, axis=1)
+    R = np.roll(I, -1, axis=1)
+
+    cU = np.abs(R - L)
+    cL = np.abs(U - L) + cU
+    cR = np.abs(U - R) + cU
+
+    for i in range(1, height):
+        mU = m[i-1]
+        mL = np.roll(mU, 1)
+        mR = np.roll(mU, -1)
+
+        mULR = np.array([mU, mL, mR])
+        cULR = np.array([cU[i], cL[i], cR[i]])
+        mULR += cULR
+
+        argmins = np.argmin(mULR, axis=0)
+        m[i] = np.choose(argmins, mULR)
+        energy[i] = np.choose(argmins, cULR)
+
+    return energy
+
+
+def cumulative_map_forward(image, energy_map):
+    kernel_x = np.array([[0., 0., 0.], [-1., 0., 1.], [0., 0., 0.]], dtype=np.float64)
+    kernel_y_left = np.array([[0., 0., 0.], [0., 0., 1.], [0., -1., 0.]], dtype=np.float64)
+    kernel_y_right = np.array([[0., 0., 0.], [1., 0., 0.], [0., -1., 0.]], dtype=np.float64)
+
+    matrix_x = calc_neighbor_matrix(image, kernel_x)
+    matrix_y_left = calc_neighbor_matrix(image, kernel_y_left)
+    matrix_y_right = calc_neighbor_matrix(image, kernel_y_right)
+
+    m, n = energy_map.shape
+    output = np.copy(energy_map)
+    for row in range(1, m):
+        for col in range(n):
+            if col == 0:
+                e_right = output[row - 1, col + 1] + matrix_x[row - 1, col + 1] + matrix_y_right[row - 1, col + 1]
+                e_up = output[row - 1, col] + matrix_x[row - 1, col]
+                output[row, col] = energy_map[row, col] + min(e_right, e_up)
+            elif col == n - 1:
+                e_left = output[row - 1, col - 1] + matrix_x[row - 1, col - 1] + matrix_y_left[row - 1, col - 1]
+                e_up = output[row - 1, col] + matrix_x[row - 1, col]
+                output[row, col] = energy_map[row, col] + min(e_left, e_up)
+            else:
+                e_left = output[row - 1, col - 1] + matrix_x[row - 1, col - 1] + matrix_y_left[row - 1, col - 1]
+                e_right = output[row - 1, col + 1] + matrix_x[row - 1, col + 1] + matrix_y_right[row - 1, col + 1]
+                e_up = output[row - 1, col] + matrix_x[row - 1, col]
+                output[row, col] = energy_map[row, col] + min(e_left, e_right, e_up)
+    return output
+
+
+def calc_neighbor_matrix(image, kernel):
+    b, g, r = cv2.split(image)
+    output = np.absolute(cv2.filter2D(b, -1, kernel=kernel)) + \
+             np.absolute(cv2.filter2D(g, -1, kernel=kernel)) + \
+             np.absolute(cv2.filter2D(r, -1, kernel=kernel))
+    return output

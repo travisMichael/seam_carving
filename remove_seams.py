@@ -18,10 +18,13 @@ def scale_image(image_to_scale, number_of_pixels_to_remove):
         start_time = time.time()
         dy = y_gradient_magnitudes(image_to_scale)
         dy_time += time.time() - start_time
-        dI = dx + dy
+        # dI = dx + dy
+        # dI = calc_energy_map(image_to_scale)
+        dI = np.zeros((h,w), dtype=float)
 
         start_time = time.time()
-        aggregated_energy_map = calculate_optimal_energy_map(dI)
+        # aggregated_energy_map = calculate_optimal_energy_map(dI)
+        aggregated_energy_map = forward_energy(image_to_scale)
         path_time += time.time() - start_time
 
         start_time = time.time()

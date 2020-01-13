@@ -7,21 +7,18 @@ import cv2
 # One pitfall was figuring out how to calculate the x and y gradients
 
 
-# img = Image.open('island_original.png')
+# img_array = cv2.imread('bench_original.png').astype(np.float64)
 #
-# img_array = cv2.imread('island_original.png').astype(np.float64)
+# new_image = scale_image(img_array.astype(float), 256)
 #
-# print(img.format)
-#
-# new_image = scale_image(img_array.astype(float))
-#
-# cv2.imwrite("island_result.png", new_image)
+# cv2.imwrite("bench_forward_result.png", new_image)
 
+# 4
+img_array = cv2.imread('car_original.png').astype(np.float64)
+img_array = cv2.imread('elongated_car_forward_result.png').astype(np.float64)
 
-img_array = cv2.imread('dolphin.png').astype(np.float64)
+new_image = scale_image_up(img_array, 30)
 
-new_image = scale_image_up(img_array, 120)
-
-cv2.imwrite("dolphin_50_result.png", new_image)
+cv2.imwrite("elongated_car_forward_result.png", new_image)
 
 print("done")
