@@ -210,6 +210,55 @@ def calc_energy_map(image):
         return b_energy + g_energy + r_energy
 
 
+def calculate_magnitude(image):
+    squared = image * image
+    sum = np.sum(squared, axis=2)
+    return np.sqrt(sum)
+
+
+# def forward_energy(image, e_2=None):
+#     img_copy = np.copy(image)
+#     h, w, _ = image.shape
+#     if e_2 == None:
+#         e_2 = np.zeros((h, w))
+#     I_plus_one = np.roll(img_copy, 1, axis=0)
+#     J_plus_one = np.roll(img_copy, 1, axis=1)
+#     I_minus_one = np.roll(img_copy, -1, axis=0)
+#     J_minus_one = np.roll(img_copy, -1, axis=1)
+#
+#     I_plus_one[0, :] = image[0, :]
+#     I_plus_one[h-1, :] = image[h-1, :]
+#
+#     I_minus_one[0, :] = image[0, :]
+#     I_minus_one[h-1, :] = image[h-1, :]
+#
+#     J_plus_one[:, 0] = image[:, 0]
+#     J_plus_one[:, w-1] = image[:, w-1]
+#
+#     J_minus_one[:, 0] = image[:, 0]
+#     J_minus_one[:, w-1] = image[:, w-1]
+#
+#     temp = calculate_magnitude(J_plus_one - J_minus_one)
+#     C_L = temp + calculate_magnitude(I_minus_one - J_minus_one)
+#     C_U = temp
+#     C_R = temp + calculate_magnitude(I_minus_one - J_plus_one)
+#
+#     M = np.zeros((h, w))
+#     for i in range(1, h):
+#         mU = M[i-1]
+#         mL = np.roll(mU, 1)
+#         mR = np.roll(mU, -1)
+#
+#         mULR = np.array([mU, mL, mR])
+#         cULR = np.array([C_U[i], C_L[i], C_R[i]])
+#         mULR += cULR
+#
+#         argmins = np.argmin(mULR, axis=0)
+#         m[i] = np.choose(argmins, mULR)
+#         energy[i] = np.choose(argmins, cULR)
+#
+#     return energy
+
 def forward_energy(img, flag=False):
     height = img.shape[0]
     width = img.shape[1]
@@ -239,7 +288,7 @@ def forward_energy(img, flag=False):
         m[i] = np.choose(argmins, mULR)
         energy[i] = np.choose(argmins, cULR)
 
-    return energy
+    return m
 
 
 def cumulative_map_forward(image, energy_map):
