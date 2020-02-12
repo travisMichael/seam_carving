@@ -19,8 +19,7 @@ def scale_image(image_to_scale, number_of_pixels_to_remove):
         dy = y_gradient_magnitudes(image_to_scale)
         dy_time += time.time() - start_time
         # dI = dx + dy
-        # dI = calc_energy_map(image_to_scale)
-        dI = np.zeros((h,w), dtype=float)
+        dI = dx + dy
 
         start_time = time.time()
         # aggregated_energy_map = calculate_optimal_energy_map(dI)

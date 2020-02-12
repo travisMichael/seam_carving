@@ -9,6 +9,8 @@ def scale_image_up(image_to_scale, number_of_seams_to_add):
     path_time = 0.0
     removal_time = 0.0
 
+    original_indices = calculate_original_seam_indices(image_to_scale)
+
     seams_to_insert = []
 
     for i in range(number_of_seams_to_add):
@@ -22,16 +24,16 @@ def scale_image_up(image_to_scale, number_of_seams_to_add):
         dI = dx + dy
 
         start_time = time.time()
-        # aggregated_energy_map = calculate_optimal_energy_map(dI)
-        # aggregated_energy_map = cumulative_map_forward(image_to_scale, dI)
-        aggregated_energy_map = forward_energy(image_to_scale)
+        aggregated_energy_map = calculate_optimal_energy_map(dI)
+        # aggregated_energy_map = forward_energy(image_to_scale, dI)
         path_time += time.time() - start_time
 
         start_time = time.time()
-        seam = calculate_seam(aggregated_energy_map)
-
-        seams_to_insert.append(seam)
-        image_to_scale = remove_seam(image_to_scale, seam)
+        local_seam = calculate_seam(aggregated_energy_map)
+        original_seam = get_original_seam(local_seam, original_indices)
+        seams_to_insert.append(original_seam)
+        image_to_scale = remove_seam(image_to_scale, local_seam, i)
+        original_indices = remove_seam_from_original_indices(local_seam, original_indices)
         removal_time += time.time() - start_time
 
         if i % 10 == 0:
