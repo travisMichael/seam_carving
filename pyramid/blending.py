@@ -116,13 +116,13 @@ def reduce_layer(image, kernel=generatingKernel(0.4)):
     w_new = ceiling(w / 2)
 
     flipped_kernel = np.flip(kernel)
-    blurred = cv2.filter2D(image, -1, kernel=flipped_kernel, borderType=cv2.BORDER_REFLECT101)
-    image_new = np.zeros((h_new, w_new))
+    blurred = cv2.filter2D(image.astype(float), -1, kernel=flipped_kernel, borderType=cv2.BORDER_REFLECT101)
+    image_new = np.zeros((h_new, w_new)).astype(float)
 
     for i in range(h_new):
         image_new[i][:] = blurred[i*2][0:w + 1: 2]
 
-    return normalize(image_new)
+    return image_new
 
 
 def expand_layer(image, kernel=generatingKernel(0.4)):
@@ -177,14 +177,14 @@ def expand_layer(image, kernel=generatingKernel(0.4)):
 
     h, w = image.shape
 
-    image_new = np.zeros((h * 2, w * 2))
+    image_new = np.zeros((h * 2, w * 2)).astype(float)
     for i in range(h):
         image_new[i*2][0:w*2 + 1:2] = image[i]
 
     flipped_kernel = np.flip(kernel)
     blurred = 4 * cv2.filter2D(image_new, -1, kernel=flipped_kernel, borderType=cv2.BORDER_REFLECT101)
 
-    return normalize(blurred)
+    return blurred
 
 
 def normalize(image):
@@ -221,7 +221,7 @@ def gaussPyramid(image, levels):
 
     layers_of_pyramid = []
 
-    image_to_reduce = np.copy(image)
+    image_to_reduce = np.copy(image).astype(float)
     layers_of_pyramid.append(image_to_reduce)
 
     for i in range(levels):
@@ -229,6 +229,11 @@ def gaussPyramid(image, levels):
         layers_of_pyramid.append(image_to_reduce)
 
     return layers_of_pyramid
+
+
+def expand_and_resize(image, h_expected, w_expected):
+    expanded_image = expand_layer(image)
+    return expanded_image[0:h_expected, 0:w_expected]
 
 
 def laplPyramid(gaussPyr):
@@ -275,12 +280,12 @@ def laplPyramid(gaussPyr):
     for i in range(gaussPyr_length - 1):
         current = gaussPyr[i]
         next = gaussPyr[i + 1]
-        expanded = expand_layer(next)
-
         h, w = current.shape
-        h_, w_ = expanded.shape
-        if h != h_ or w != w_:
-            expanded = cv2.resize(expanded, (w, h))
+        expanded = expand_and_resize(next, h, w)
+
+        # h_, w_ = expanded.shape
+        # if h != h_ or w != w_:
+        #     expanded = cv2.resize(expanded, (w, h))
         # cv2.subtract(current, expanded)
         laplacian = np.subtract(current, expanded)
         lapl_pyramid_layers.append(laplacian)
@@ -382,16 +387,16 @@ def collapse(pyramid):
     """
 
     # WRITE YOUR CODE HERE.
-    aggregated = pyramid[len(pyramid) - 1]
+    aggregate = pyramid[len(pyramid) - 1].astype(float)
     for i in range(len(pyramid) - 2, -1, -1):
-        current = pyramid[i]
-        exp = expand_layer(aggregated)
+        current = pyramid[i].astype(float)
         h, w = current.shape
-        h_, w_ = exp.shape
-        if h != h_ or w != w_:
-            exp = cv2.resize(exp, (w, h))
-        aggregated = cv2.add(current, exp)
+        expanded_aggregate = expand_and_resize(aggregate, h, w)
+        # h_, w_ = exp.shape
+        # if h != h_ or w != w_:
+        #     exp = cv2.resize(exp, (w, h)).astype(float)
+        aggregate = cv2.add(current, expanded_aggregate).astype(float)
         # aggregated = current + exp
 
-    return aggregated
+    return aggregate.astype(float)
 
