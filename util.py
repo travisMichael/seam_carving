@@ -151,6 +151,19 @@ def calculate_seam(y_map):
     return seam
 
 
+def mask_seams(original_image, seams):
+
+    i = 0
+    while len(seams) > 0:
+        next_optimal_seam = seams.pop(0)
+        original_image = mask_single_seam(original_image, next_optimal_seam)
+        i += 1
+        if i % 10 == 0:
+            print("Seams inserted: " + str(i))
+
+    return original_image
+
+
 def insert_seams(original_image, seams, with_mask):
 
     i = 0
@@ -163,6 +176,24 @@ def insert_seams(original_image, seams, with_mask):
             print("Seams inserted: " + str(i))
 
     return original_image
+
+
+def mask_single_seam(temp_image, optimal_seam):
+    height, width, _ = temp_image.shape
+
+    for i in range(height):
+        column = int(optimal_seam[i])
+        temp_image[i, column] = np.array([0, 0, 255])
+        # if column == 0:
+        #     neighboring_pixels_average = np.average(temp_image[i, 0:1, :], axis=0)
+        # else:
+        #     neighboring_pixels_average = np.average(temp_image[i, column - 1: column + 1, :], axis=0)
+        #
+        # new_constructed_image[i, column, :] = neighboring_pixels_average
+        # new_constructed_image[i, 0:column, :] = temp_image[i, 0:column, :]
+        # new_constructed_image[i, column+1:width+2, :] = temp_image[i, column:width+1, :]
+
+    return temp_image
 
 
 def insert_single_seam(temp_image, optimal_seam, with_mask):

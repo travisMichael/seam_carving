@@ -40,10 +40,22 @@ def bench_backward():
     cv2.imwrite("bench_backward_result.png", new_image)
 
 
+def bench_backward_with_mask():
+    img_array = cv2.imread('bench_original.png').astype(np.float64)
+    new_image = scale_image(img_array.astype(float), 256, with_mask=True)
+    cv2.imwrite("bench_backward_mask_result.png", new_image)
+
+
 def bench_forward():
     img_array = cv2.imread('bench_original.png').astype(np.float64)
     new_image = scale_image(img_array.astype(float), 256, True)
     cv2.imwrite("bench_forward_result.png", new_image)
+
+
+def bench_forward_with_mask():
+    img_array = cv2.imread('bench_original.png').astype(np.float64)
+    new_image = scale_image(img_array.astype(float), 256, with_mask=True, use_forward_energy=True)
+    cv2.imwrite("bench_forward_mask_result.png", new_image)
 
 
 # Seam insertion: Figure 9 (elongated car) from the 2008 paper -- recreate the comparison images for both backward and forward energies
@@ -61,4 +73,5 @@ def car_backward():
 
 if __name__ == '__main__':
     a = sys.argv[0]
+    bench_forward_with_mask()
     print("done")
