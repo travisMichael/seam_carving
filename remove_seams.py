@@ -2,7 +2,7 @@ from util import *
 import time
 
 
-def scale_image(image_to_scale, number_of_pixels_to_remove):
+def scale_image(image_to_scale, number_of_pixels_to_remove, use_forward_energy=False):
 
     dx_time = 0.0
     dy_time = 0.0
@@ -21,8 +21,10 @@ def scale_image(image_to_scale, number_of_pixels_to_remove):
         dI = dx + dy
 
         start_time = time.time()
-        # aggregated_energy_map = calculate_optimal_energy_map(dI)
-        aggregated_energy_map = forward_energy(image_to_scale)
+        if use_forward_energy:
+            aggregated_energy_map = forward_energy(image_to_scale)
+        else:
+            aggregated_energy_map = calculate_optimal_energy_map(dI)
         path_time += time.time() - start_time
 
         start_time = time.time()
