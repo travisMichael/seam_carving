@@ -2,7 +2,7 @@ from util import *
 import time
 
 
-def scale_image_up(image_to_scale, number_of_seams_to_add):
+def scale_image_up(image_to_scale, number_of_seams_to_add, with_mask=False):
     original_image = np.copy(image_to_scale)
     dx_time = 0.0
     dy_time = 0.0
@@ -24,8 +24,8 @@ def scale_image_up(image_to_scale, number_of_seams_to_add):
         dI = dx + dy
 
         start_time = time.time()
-        # aggregated_energy_map = calculate_optimal_energy_map(dI)
-        aggregated_energy_map = forward_energy(image_to_scale)
+        aggregated_energy_map = calculate_optimal_energy_map(dI)
+        # aggregated_energy_map = forward_energy(image_to_scale)
         path_time += time.time() - start_time
 
         start_time = time.time()
@@ -40,6 +40,6 @@ def scale_image_up(image_to_scale, number_of_seams_to_add):
             print("Seams removed: ", i, dx_time, dy_time, path_time, removal_time)
 
     print("Inserting seams..")
-    image_to_scale = insert_seams(original_image, seams_to_insert)
+    image_to_scale = insert_seams(original_image, seams_to_insert, with_mask)
 
     return image_to_scale

@@ -151,37 +151,35 @@ def calculate_seam(y_map):
     return seam
 
 
-def insert_seams(original_image, seams):
+def insert_seams(original_image, seams, with_mask):
 
     i = 0
     while len(seams) > 0:
         next_optimal_seam = seams.pop(0)
-        original_image = insert_single_seam(original_image, next_optimal_seam, i)
+        original_image = insert_single_seam(original_image, next_optimal_seam, with_mask)
         seams = increment_seams(seams, next_optimal_seam)
         i += 1
-        print(i)
+        if i % 10 == 0:
+            print("Seams inserted: " + str(i))
 
     return original_image
 
 
-def insert_single_seam(temp_image, optimal_seam):
+def insert_single_seam(temp_image, optimal_seam, with_mask):
     height, width, _ = temp_image.shape
     new_constructed_image = np.zeros((height, width + 1, 3), dtype=float)
 
     for i in range(height):
-        for j in range(width+1):
-            column = optimal_seam[i]
-            if j == column+1:
-                if j == 0:
-                    neighboring_pixels_average = np.average(temp_image[i, j:1, :], axis=0)
-                else:
-                    neighboring_pixels_average = np.average(temp_image[i, j - 1: j + 1, :], axis=0)
-                new_constructed_image[i, j, :] = neighboring_pixels_average
-
-            elif j > column:
-                new_constructed_image[i, j, :] = temp_image[i, j-1, :]
-            else:
-                new_constructed_image[i, j, :] = temp_image[i, j, :]
+        column = int(optimal_seam[i])
+        if column == 0:
+            neighboring_pixels_average = np.average(temp_image[i, 0:1, :], axis=0)
+        else:
+            neighboring_pixels_average = np.average(temp_image[i, column - 1: column + 1, :], axis=0)
+        if with_mask:
+            neighboring_pixels_average = np.array([0, 0, 255])
+        new_constructed_image[i, column, :] = neighboring_pixels_average
+        new_constructed_image[i, 0:column, :] = temp_image[i, 0:column, :]
+        new_constructed_image[i, column+1:width+2, :] = temp_image[i, column:width+1, :]
 
     return new_constructed_image
 
