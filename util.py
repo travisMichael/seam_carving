@@ -67,51 +67,29 @@ def x_gradient_magnitudes(image):
 def calculate_optimal_energy_map(energy_map):
     height, width = energy_map.shape
     y_map = np.zeros((height, width))
-    c = np.zeros((4, width))
     y_map[0] = energy_map[0]
+    m = np.zeros((height, width))
 
-    # kind of messy, but the vectorized code allows us to remove the nested for loop from the dynamic programming step
     for i in range(1, height):
-        left_shift = np.delete(y_map[i-1], 0)
-        right_shift = np.delete(y_map[i-1], width - 1)
+        m[i] = dyanamic_programming_step(m, i, energy_map[i], energy_map[i], energy_map[i])
 
-        left_shift = np.concatenate((left_shift, [np.inf]))
-        right_shift = np.concatenate(([np.inf], right_shift))
+    return m
 
-        # we want to shift left
-        c[0] = np.less_equal(left_shift, y_map[i-1])
-        c_0_i = np.where(c[0] == 1)
-        zero_not = np.logical_not(c[0])
 
-        # we want to shift right
-        c[1] = np.less_equal(right_shift, y_map[i-1])
-        c_1_i = np.where(c[1] == 1)
-        one_not = np.logical_not(c[1])
+def dyanamic_programming_step(m, index, middle, left, right):
+    _, w = m.shape
+    m_minus_one = m[index - 1]
+    m_left = np.roll(m_minus_one, 1)
+    m_left[0] = m_minus_one[0]
+    m_right = np.roll(m_minus_one, -1)
+    m_right[w - 1] = m_minus_one[w - 1]
 
-        np.put(y_map[i], c_1_i, right_shift[c_1_i])
-        np.put(y_map[i], c_0_i, left_shift[c_0_i])
-        # indices to keep original values
-        not_and = np.logical_and(zero_not, one_not)
-        not_and_i = np.where(not_and == True)
+    m_prevous = np.array([m_minus_one, m_left, m_right])
+    c_grouped = np.array([middle, left, right])
+    m_total = m_prevous + c_grouped
 
-        # if both shifting is true, then we check which shift is better
-        c[2] = np.less_equal(left_shift, right_shift)
-        c[3] = np.less_equal(right_shift, left_shift)
-
-        intermediate = np.logical_and(c[0], c[1])
-        override_left = np.logical_and(intermediate, c[2])
-        override_left_i = np.where(override_left == True)
-
-        intermediate = np.logical_and(c[0], c[1])
-        override_right = np.logical_and(intermediate, c[3])
-        override_right_i = np.where(override_right == True)
-
-        np.put(y_map[i], override_left_i, left_shift[override_left_i])
-        np.put(y_map[i], override_right_i, right_shift[override_right_i])
-        np.put(y_map[i], not_and_i, y_map[i-1][not_and_i])
-        y_map[i] = y_map[i] + energy_map[i]
-
-    return y_map
+    argmins = np.argmin(m_total, axis=0)
+    return np.choose(argmins, m_total)
 
 
 def calculate_original_seam_indices(image):
@@ -142,7 +120,7 @@ def remove_seam_from_original_indices(optimal_seam, original_indices):
     return new_indices
 
 
-def remove_seam(temp_image, optimal_seam, index):
+def remove_seam(temp_image, optimal_seam):
     height, width, _ = temp_image.shape
     updated_image = np.zeros((height, width - 1, 3))
 
@@ -186,7 +164,7 @@ def insert_seams(original_image, seams):
     return original_image
 
 
-def insert_single_seam(temp_image, optimal_seam, index):
+def insert_single_seam(temp_image, optimal_seam):
     height, width, _ = temp_image.shape
     new_constructed_image = np.zeros((height, width + 1, 3), dtype=float)
 
@@ -223,33 +201,18 @@ def calculate_magnitude(image):
     return np.sqrt(sum)
 
 
-def forward_energy(img, additional=None):
-    height = img.shape[0]
-    width = img.shape[1]
-    I = img.copy()
+def forward_energy(image):
+    h, w, _ = image.shape
+    j_plus_one = np.roll(image, -1, axis=1)
+    j_minus_one = np.roll(image, 1, axis=1)
+    i_minus_one = np.roll(image, 1, axis=0)
 
-    energy = np.zeros((height, width))
-    m = np.zeros((height, width))
+    c_U = calculate_magnitude(j_plus_one - j_minus_one)
+    c_L = c_U + calculate_magnitude(i_minus_one - j_minus_one)
+    c_R = c_U + calculate_magnitude(i_minus_one - j_minus_one)
 
-    U = np.roll(I, 1, axis=0)
-    L = np.roll(I, 1, axis=1)
-    R = np.roll(I, -1, axis=1)
-
-    cU = calculate_magnitude(R - L)
-    cL = calculate_magnitude(U - L) + cU
-    cR = calculate_magnitude(U - R) + cU
-
-    for i in range(1, height):
-        mU = m[i-1]
-        mL = np.roll(mU, 1)
-        mR = np.roll(mU, -1)
-
-        mULR = np.array([mU, mL, mR])
-        cULR = np.array([cU[i], cL[i], cR[i]])
-        mULR += cULR
-
-        argmins = np.argmin(mULR, axis=0)
-        m[i] = np.choose(argmins, mULR) + additional[i]
-        energy[i] = np.choose(argmins, cULR)
+    m = np.zeros((h, w))
+    for i in range(1, h):
+        m[i] = dyanamic_programming_step(m, i, c_U[i], c_L[i], c_R[i])
 
     return m

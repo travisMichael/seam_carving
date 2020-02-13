@@ -24,15 +24,15 @@ def scale_image_up(image_to_scale, number_of_seams_to_add):
         dI = dx + dy
 
         start_time = time.time()
-        aggregated_energy_map = calculate_optimal_energy_map(dI)
-        # aggregated_energy_map = forward_energy(image_to_scale, dI)
+        # aggregated_energy_map = calculate_optimal_energy_map(dI)
+        aggregated_energy_map = forward_energy(image_to_scale)
         path_time += time.time() - start_time
 
         start_time = time.time()
         local_seam = calculate_seam(aggregated_energy_map)
         original_seam = get_original_seam(local_seam, original_indices)
         seams_to_insert.append(original_seam)
-        image_to_scale = remove_seam(image_to_scale, local_seam, i)
+        image_to_scale = remove_seam(image_to_scale, local_seam)
         original_indices = remove_seam_from_original_indices(local_seam, original_indices)
         removal_time += time.time() - start_time
 

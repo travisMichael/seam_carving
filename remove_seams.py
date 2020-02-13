@@ -18,7 +18,6 @@ def scale_image(image_to_scale, number_of_pixels_to_remove):
         start_time = time.time()
         dy = y_gradient_magnitudes(image_to_scale)
         dy_time += time.time() - start_time
-        # dI = dx + dy
         dI = dx + dy
 
         start_time = time.time()
