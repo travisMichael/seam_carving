@@ -1,5 +1,4 @@
 from util import *
-import time
 
 
 def scale_image(image_to_scale, number_of_pixels_to_remove, with_mask=False, use_forward_energy=False):
