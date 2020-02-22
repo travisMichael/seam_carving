@@ -1,6 +1,4 @@
 import numpy as np
-import cv2
-from skimage import filters, color
 
 
 # One pitfall was figuring out how to calculate the x and y gradients
@@ -126,7 +124,7 @@ def mask_seams(original_image, seams):
     return original_image
 
 
-def insert_seams(original_image, seams, with_mask):
+def insert_seams_from_deleted_seam_indices(original_image, seams, with_mask):
 
     i = 0
     while len(seams) > 0:

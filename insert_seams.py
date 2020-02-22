@@ -1,7 +1,7 @@
 from util import *
 
 
-def scale_image_up(image_to_scale, number_of_seams_to_add, with_mask=False, use_forward_energy=False):
+def insert_seams(image_to_scale, number_of_seams_to_add, with_mask=False, use_forward_energy=False):
     original_image = np.copy(image_to_scale)
 
     original_indices = calculate_original_seam_indices(image_to_scale)
@@ -26,6 +26,6 @@ def scale_image_up(image_to_scale, number_of_seams_to_add, with_mask=False, use_
             print("Seams removed: ", i)
 
     print("Inserting seams..")
-    image_to_scale = insert_seams(original_image, seams_to_insert, with_mask)
+    image_to_scale = insert_seams_from_deleted_seam_indices(original_image, seams_to_insert, with_mask)
 
     return image_to_scale

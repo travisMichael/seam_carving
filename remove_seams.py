@@ -1,7 +1,7 @@
 from util import *
 
 
-def scale_image(image_to_scale, number_of_pixels_to_remove, with_mask=False, use_forward_energy=False):
+def remove_seams(image_to_scale, number_of_pixels_to_remove, with_mask=False, use_forward_energy=False):
 
     original_image = np.copy(image_to_scale)
     original_indices = calculate_original_seam_indices(image_to_scale)
