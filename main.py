@@ -7,30 +7,32 @@ import sys
 
 # Seam removal: Figure 5 from the 2007 paper -- you do not need to show scaling or cropping
 def island_down():
-    img_array = cv2.imread('island_original.png').astype(np.float64)
+    # runtime is roughly 40 seconds
+    img_array = cv2.imread('/island/island_original.png').astype(np.float64)
     new_image = scale_image(img_array.astype(float), 350)
-    cv2.imwrite("island_result.png", new_image)
+    cv2.imwrite("island/island_result.png", new_image)
+
 
 # Seam insertion: Figure 8 from the 2007 paper -- parts c, d, and f only
 # c
 def dolphin_up_with_mask():
-    img_array = cv2.imread('dolphin.png').astype(np.float64)
+    img_array = cv2.imread('/dolphin/dolphin.png').astype(np.float64)
     new_image = scale_image_up(img_array, 120, use_mask=True)
-    cv2.imwrite("dolphin_up_mask.png", new_image)
+    cv2.imwrite("dolphin/dolphin_stretch_1_mask.png", new_image)
 
 
 #d
 def dolphin_up():
-    img_array = cv2.imread('dolphin.png').astype(np.float64)
-    new_image = scale_image_up(img_array, 120)
-    cv2.imwrite("dolphin_up.png", new_image)
+    img_array = cv2.imread('dolphin/dolphin.png').astype(np.float64)
+    new_image = scale_image_up(img_array, 119)
+    cv2.imwrite("dolphin/dolphin_stretch_1_result.png", new_image)
 
 
 # f
 def dolphin_up_up():
-    img_array = cv2.imread('dolphin_up.png').astype(np.float64)
-    new_image = scale_image_up(img_array, 120)
-    cv2.imwrite("dolphin_up_up.png", new_image)
+    img_array = cv2.imread('dolphin/dolphin_stretch_1_result.png').astype(np.float64)
+    new_image = scale_image_up(img_array, 121)
+    cv2.imwrite("dolphin/dolphin_stretch_2_result.png", new_image)
 
 
 # Seam removal: Figure 8 (bench) from the 2008 paper -- recreate the comparison images, including seam removal depictions, for both backward and forward energies
@@ -73,5 +75,7 @@ def car_backward():
 
 if __name__ == '__main__':
     a = sys.argv[0]
-    bench_forward_with_mask()
+    # island_down()
+    # dolphin_up()
+    dolphin_up_up()
     print("done")

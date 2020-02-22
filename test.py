@@ -1,24 +1,22 @@
-from insert_seams import scale_image_up
-from remove_seams import scale_image
 import numpy as np
 import cv2
 
 
-# One pitfall was figuring out how to calculate the x and y gradients
+island_result = cv2.imread("island/island_result.png", 0).astype(float)
+island_target = cv2.imread("island/expected_island.png", 0).astype(float)
 
+dolphin_result = cv2.imread("dolphin/dolphin_stretch_1_result.png", 0).astype(float)
+dolphin_target = cv2.imread("dolphin/dolphinStretch1.png", 0).astype(float)
 
-# img_array = cv2.imread('bench_original.png').astype(np.float64)
-#
-# new_image = scale_image(img_array.astype(float), 256)
-#
-# cv2.imwrite("bench_forward_result.png", new_image)
+dolphin_stretch_2_result = cv2.imread("dolphin/dolphin_stretch_2_result.png", 0).astype(float)
+dolphin_stretch_2_target = cv2.imread("dolphin/dolphinStretch2.png", 0).astype(float)
 
-# 4
-img_array = cv2.imread('car_original.png').astype(np.float64)
-img_array = cv2.imread('elongated_car_forward_result.png').astype(np.float64)
+island_diff = island_result - island_target
+dolphin_diff_1 = dolphin_result - dolphin_target
+dolphin_diff_2 = dolphin_stretch_2_result - dolphin_stretch_2_target
 
-new_image = scale_image_up(img_array, 30)
+cv2.imwrite("island/island_diff.png", island_diff)
+cv2.imwrite("dolphin/dolphin_diff_1.png", dolphin_diff_1)
+cv2.imwrite("dolphin/dolphin_diff_2.png", dolphin_diff_2)
 
-cv2.imwrite("elongated_car_forward_result.png", new_image)
-
-print("done")
+print()

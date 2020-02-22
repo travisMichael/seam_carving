@@ -5,63 +5,25 @@ from skimage import filters, color
 
 # One pitfall was figuring out how to calculate the x and y gradients
 
-def y_gradient_magnitudes(image):
+def calculate_gradients(image):
     height, width, channels = image.shape
 
-    a = np.delete(image, obj=[0, 1], axis=0)
-    b = np.delete(image, obj=[height - 1, height - 2], axis=0)
+    y_gradient = np.zeros((height, width, channels)).astype(float)
+    x_gradient = np.zeros((height, width, channels)).astype(float)
 
-    diff = (a - b)
-    squared = diff * diff
-    sum = np.sum(squared, axis=2)
-    root = np.sqrt(sum)
+    dy_0, dx_0 = np.gradient(image[:, :, 0])
+    dy_1, dx_1 = np.gradient(image[:, :, 0])
+    dy_2, dx_2 = np.gradient(image[:, :, 0])
 
-    first_row_diff = abs(image[0] - image[1])
-    last_row_diff = abs(image[height - 1] - image[height - 2])
+    y_gradient[:, :, 0] = dy_0
+    y_gradient[:, :, 0] = dy_1
+    y_gradient[:, :, 0] = dy_2
 
-    first_row_squared = first_row_diff * first_row_diff
-    first_row_sum = np.sum(first_row_squared, axis=1)
-    first_row_root = np.sqrt(first_row_sum)
+    x_gradient[:, :, 0] = dx_0
+    x_gradient[:, :, 0] = dx_1
+    x_gradient[:, :, 0] = dx_2
 
-    last_row_squared = last_row_diff * last_row_diff
-    last_row_sum = np.sum(last_row_squared, axis=1)
-    last_row_root = np.sqrt(last_row_sum)
-
-    c = np.vstack((first_row_root, root))
-    dx = np.vstack((c, last_row_root))
-
-    return dx
-
-
-def x_gradient_magnitudes(image):
-    height, width, channels = image.shape
-
-    a = np.delete(image, obj=[0, 1], axis=1)
-    b = np.delete(image, obj=[width - 1, width - 2], axis=1)
-
-    diff = abs(a - b)
-    squared = diff * diff
-    sum = np.sum(squared, axis=2)
-    root = np.sqrt(sum)
-
-    first_column_diff = abs(image[:, 0, :] - image[:, 1, :])
-    last_column_diff = abs(image[:, width - 1, :] - image[:, width - 2, :])
-
-    first_column_squared = first_column_diff * first_column_diff
-    first_column_sum = np.sum(first_column_squared, axis=1)
-    first_column_root = np.sqrt(first_column_sum)
-
-    last_column_squared = last_column_diff * last_column_diff
-    last_column_sum = np.sum(last_column_squared, axis=1)
-    last_column_root = np.sqrt(last_column_sum)
-
-    first_column = np.expand_dims(first_column_root, axis=1)
-    last_column = np.expand_dims(last_column_root, axis=1)
-
-    c = np.hstack((first_column, root))
-    dy = np.hstack((c, last_column))
-
-    return dy
+    return y_gradient, x_gradient
 
 
 def calculate_optimal_energy_map(energy_map):
@@ -184,14 +146,6 @@ def mask_single_seam(temp_image, optimal_seam):
     for i in range(height):
         column = int(optimal_seam[i])
         temp_image[i, column] = np.array([0, 0, 255])
-        # if column == 0:
-        #     neighboring_pixels_average = np.average(temp_image[i, 0:1, :], axis=0)
-        # else:
-        #     neighboring_pixels_average = np.average(temp_image[i, column - 1: column + 1, :], axis=0)
-        #
-        # new_constructed_image[i, column, :] = neighboring_pixels_average
-        # new_constructed_image[i, 0:column, :] = temp_image[i, 0:column, :]
-        # new_constructed_image[i, column+1:width+2, :] = temp_image[i, column:width+1, :]
 
     return temp_image
 
@@ -228,6 +182,11 @@ def calculate_magnitude(image):
     squared = image * image
     sum = np.sum(squared, axis=2)
     return np.sqrt(sum)
+
+
+def backward_energy(image):
+    dy, dx = calculate_gradients(image)
+    return calculate_magnitude(dx) + calculate_magnitude(dy)
 
 
 def forward_energy(image):
