@@ -1,15 +1,5 @@
-import numpy as np
 import cv2
 
-
-# car_target = cv2.imread("car/car_expand-result.png").astype(float)
-# h, w, _ = car_target.shape
-#
-# car_backward_target = car_target[:, 0:int(w/2)-2, :]
-# car_forward_target = car_target[:, int(w/2)+3:, :]
-#
-# cv2.imwrite("car/car_backward_target.png", car_backward_target)
-# cv2.imwrite("car/car_forward_target.png", car_forward_target)
 
 island_result = cv2.imread("island/island_result.png", 0).astype(float)
 island_target = cv2.imread("island/expected_island.png", 0).astype(float)
@@ -47,5 +37,3 @@ cv2.imwrite("bench/bench_backward_diff.png", bench_backward_diff)
 cv2.imwrite("bench/bench_forward_diff.png", bench_forward_diff)
 cv2.imwrite("car/car_backward_diff.png", car_backward_diff)
 cv2.imwrite("car/car_forward_diff.png", car_forward_diff)
-
-print()
