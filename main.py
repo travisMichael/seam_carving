@@ -5,6 +5,7 @@ import cv2
 import sys
 import time
 
+
 # Seam removal: Figure 5 from the 2007 paper -- you do not need to show scaling or cropping
 def island_down():
     # runtime is roughly 40 seconds
@@ -51,13 +52,13 @@ def bench_backward_with_mask():
 
 def bench_forward():
     img_array = cv2.imread('bench/bench_original.png').astype(np.float64)
-    new_image = insert_seams(img_array.astype(float), 256, use_forward_energy=True)
+    new_image = remove_seams(img_array.astype(float), 256, use_forward_energy=True)
     cv2.imwrite("bench/bench_forward_result.png", new_image)
 
 
 def bench_forward_with_mask():
     img_array = cv2.imread('bench/bench_original.png').astype(np.float64)
-    new_image = insert_seams(img_array.astype(float), 256, with_mask=True, use_forward_energy=True)
+    new_image = remove_seams(img_array.astype(float), 256, with_mask=True, use_forward_energy=True)
     cv2.imwrite("bench/bench_forward_mask_result.png", new_image)
 
 
