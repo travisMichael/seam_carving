@@ -14,15 +14,17 @@ source activate CS6475
 
 To run all of the seam carving replications, run the following command:
 
-python main.py all
+python seam_carving.py all
 
 The program takes roughly 330 seconds to complete on my macbook pro.
 
 To generate the comparison images, run the following command:
 
-python main.py diff
+python seam_carving.py diff
 
-All of the artifacts will be under a directory associated to their image name.
+To generate the quantitative comparison results, run the following command:
+
+python quantitative_comparison.py
 
 
 Link to video:

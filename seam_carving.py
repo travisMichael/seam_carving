@@ -12,6 +12,7 @@ def island_down():
     img_array = cv2.imread('island/island_original.png').astype(np.float64)
     new_image = remove_seams(img_array.astype(float), 350)
     cv2.imwrite("island/island_result.png", new_image)
+    cv2.imwrite("fig5.jpg", new_image)
 
 
 # Seam insertion: Figure 8 from the 2007 paper -- parts c, d, and f only
@@ -20,6 +21,7 @@ def dolphin_stretch_1_with_mask():
     img_array = cv2.imread('dolphin/dolphin.png').astype(np.float64)
     new_image = insert_seams(img_array, 120, with_mask=True)
     cv2.imwrite("dolphin/dolphin_stretch_1_mask.png", new_image)
+    cv2.imwrite("fig8c_07.jpg", new_image)
 
 
 # d
@@ -27,6 +29,7 @@ def dolphin_stretch_1():
     img_array = cv2.imread('dolphin/dolphin.png').astype(np.float64)
     new_image = insert_seams(img_array, 119)
     cv2.imwrite("dolphin/dolphin_stretch_1_result.png", new_image)
+    cv2.imwrite("fig8d_07.jpg", new_image)
 
 
 # f
@@ -34,6 +37,7 @@ def dolphin_stretch_2():
     img_array = cv2.imread('dolphin/dolphin_stretch_1_result.png').astype(np.float64)
     new_image = insert_seams(img_array, 121)
     cv2.imwrite("dolphin/dolphin_stretch_2_result.png", new_image)
+    cv2.imwrite("fig8f_07.jpg", new_image)
 
 
 # Seam removal: Figure 8 (bench) from the 2008 paper -- recreate the comparison images,
@@ -42,24 +46,28 @@ def bench_backward():
     img_array = cv2.imread('bench/bench_original.png').astype(np.float64)
     new_image = remove_seams(img_array.astype(float), 256)
     cv2.imwrite("bench/bench_backward_result.png", new_image)
+    cv2.imwrite("fig8Comp_backward_08.jpg", new_image)
 
 
 def bench_backward_with_mask():
     img_array = cv2.imread('bench/bench_original.png').astype(np.float64)
     new_image = remove_seams(img_array.astype(float), 256, with_mask=True)
     cv2.imwrite("bench/bench_backward_mask_result.png", new_image)
+    cv2.imwrite("fig8Seam_backward_08.jpg", new_image)
 
 
 def bench_forward():
     img_array = cv2.imread('bench/bench_original.png').astype(np.float64)
     new_image = remove_seams(img_array.astype(float), 256, use_forward_energy=True)
     cv2.imwrite("bench/bench_forward_result.png", new_image)
+    cv2.imwrite("fig8Comp_forward_08.jpg", new_image)
 
 
 def bench_forward_with_mask():
     img_array = cv2.imread('bench/bench_original.png').astype(np.float64)
     new_image = remove_seams(img_array.astype(float), 256, with_mask=True, use_forward_energy=True)
     cv2.imwrite("bench/bench_forward_mask_result.png", new_image)
+    cv2.imwrite("fig8Seam_forward_08.jpg", new_image)
 
 
 # Seam insertion: Figure 9 (elongated car) from the 2008 paper -- recreate the comparison images
@@ -68,12 +76,14 @@ def car_forward():
     img_array = cv2.imread('car/car_original.png').astype(np.float64)
     new_image = insert_seams(img_array, 192, use_forward_energy=True)
     cv2.imwrite("car/car_stretch_forward.png", new_image)
+    cv2.imwrite("fig9Seam_forward_08.jpg", new_image)
 
 
 def car_backward():
     img_array = cv2.imread('car/car_original.png').astype(np.float64)
     new_image = insert_seams(img_array, 192)
     cv2.imwrite("car/car_stretch_backward.png", new_image)
+    cv2.imwrite("fig9Comp_backward_08.jpg", new_image)
 
 
 def diff():
@@ -107,12 +117,19 @@ def diff():
     car_forward_diff = car_forward_result - car_forward_target
 
     cv2.imwrite("island/island_diff.png", island_diff)
+    cv2.imwrite("fig5_extra1.jpg", island_diff)
     cv2.imwrite("dolphin/dolphin_diff_1.png", dolphin_diff_1)
+    cv2.imwrite("fig8d_07_extra1.jpg", dolphin_diff_1)
     cv2.imwrite("dolphin/dolphin_diff_2.png", dolphin_diff_2)
+    cv2.imwrite("fig8f_07_extra1.jpg", dolphin_diff_2)
     cv2.imwrite("bench/bench_backward_diff.png", bench_backward_diff)
+    cv2.imwrite("fig8Comp_backward_08_extra1.jpg", bench_backward_diff)
     cv2.imwrite("bench/bench_forward_diff.png", bench_forward_diff)
+    cv2.imwrite("fig8Comp_forward_08_extra1.jpg", bench_forward_diff)
     cv2.imwrite("car/car_backward_diff.png", car_backward_diff)
+    cv2.imwrite("fig9Seam_forward_08_extra1.jpg", car_backward_diff)
     cv2.imwrite("car/car_forward_diff.png", car_forward_diff)
+    cv2.imwrite("fig9Comp_backward_08_extra1.jpg", car_forward_diff)
 
 
 if __name__ == '__main__':
