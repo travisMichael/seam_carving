@@ -15,7 +15,7 @@ dolphin_diff_1 = cv2.imread("fig8d_07_extra1.jpg", 0).astype(float)
 dolphin_diff_2 = cv2.imread("fig8f_07_extra1.jpg", 0).astype(float)
 bench_backward_diff = cv2.imread("fig8Comp_backward_08_extra1.jpg", 0).astype(float)
 bench_forward_diff = cv2.imread("fig8Comp_forward_08_extra1.jpg", 0).astype(float)
-car_backward_diff = cv2.imread("fig9Seam_forward_08_extra1.jpg", 0).astype(float)
+car_backward_diff = cv2.imread("fig9Comp_forward_08_extra1.jpg", 0).astype(float)
 car_forward_diff = cv2.imread("fig9Comp_backward_08_extra1.jpg", 0).astype(float)
 
 

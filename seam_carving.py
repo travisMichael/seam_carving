@@ -76,7 +76,7 @@ def car_forward():
     img_array = cv2.imread('car/car_original.png').astype(np.float64)
     new_image = insert_seams(img_array, 192, use_forward_energy=True)
     cv2.imwrite("car/car_stretch_forward.png", new_image)
-    cv2.imwrite("fig9Seam_forward_08.jpg", new_image)
+    cv2.imwrite("fig9Comp_forward_08.jpg", new_image)
 
 
 def car_backward():
@@ -87,26 +87,26 @@ def car_backward():
 
 
 def diff():
-    island_result = cv2.imread("island/island_result.png", 0).astype(float)
-    island_target = cv2.imread("island/expected_island.png", 0).astype(float)
+    island_result = cv2.imread("fig5.jpg", 0).astype(float)
+    island_target = cv2.imread("fig5_extra2.jpg", 0).astype(float)
 
-    dolphin_result = cv2.imread("dolphin/dolphin_stretch_1_result.png", 0).astype(float)
-    dolphin_target = cv2.imread("dolphin/dolphinStretch1.png", 0).astype(float)
+    dolphin_result = cv2.imread("fig8d_07.jpg", 0).astype(float)
+    dolphin_target = cv2.imread("fig8d_07_extra2.jpg", 0).astype(float)
 
-    dolphin_stretch_2_result = cv2.imread("dolphin/dolphin_stretch_2_result.png", 0).astype(float)
-    dolphin_stretch_2_target = cv2.imread("dolphin/dolphinStretch2.png", 0).astype(float)
+    dolphin_stretch_2_result = cv2.imread("fig8f_07.jpg", 0).astype(float)
+    dolphin_stretch_2_target = cv2.imread("fig8f_07_extra2.jpg", 0).astype(float)
 
-    bench_backward_result = cv2.imread("bench/bench_backward_result.png", 0).astype(float)
-    bench_backward_target = cv2.imread("bench/bench_backward_target.png", 0).astype(float)
+    bench_backward_result = cv2.imread("fig8Comp_backward_08.jpg", 0).astype(float)
+    bench_backward_target = cv2.imread("fig8Comp_backward_08_extra2.jpg", 0).astype(float)
 
-    bench_forward_result = cv2.imread("bench/bench_forward_result.png", 0).astype(float)
-    bench_forward_target = cv2.imread("bench/bench_forward_target.png", 0).astype(float)
+    bench_forward_result = cv2.imread("fig8Comp_forward_08.jpg", 0).astype(float)
+    bench_forward_target = cv2.imread("fig8Comp_forward_08_extra2.jpg", 0).astype(float)
 
-    car_backward_result = cv2.imread("car/car_stretch_backward.png", 0).astype(float)
-    car_backward_target = cv2.imread("car/car_backward_target.png", 0).astype(float)
+    car_backward_result = cv2.imread("fig9Comp_backward_08.jpg", 0).astype(float)
+    car_backward_target = cv2.imread("fig9Comp_backward_08_extra2.jpg", 0).astype(float)
 
-    car_forward_result = cv2.imread("car/car_stretch_forward.png", 0).astype(float)
-    car_forward_target = cv2.imread("car/car_forward_target.png", 0).astype(float)
+    car_forward_result = cv2.imread("fig9Comp_forward_08.jpg", 0).astype(float)
+    car_forward_target = cv2.imread("fig9Comp_forward_08_extra2.jpg", 0).astype(float)
 
     island_diff = island_result - island_target
     dolphin_diff_1 = dolphin_result - dolphin_target
@@ -127,7 +127,7 @@ def diff():
     cv2.imwrite("bench/bench_forward_diff.png", bench_forward_diff)
     cv2.imwrite("fig8Comp_forward_08_extra1.jpg", bench_forward_diff)
     cv2.imwrite("car/car_backward_diff.png", car_backward_diff)
-    cv2.imwrite("fig9Seam_forward_08_extra1.jpg", car_backward_diff)
+    cv2.imwrite("fig9Comp_forward_08_extra1.jpg", car_backward_diff)
     cv2.imwrite("car/car_forward_diff.png", car_forward_diff)
     cv2.imwrite("fig9Comp_backward_08_extra1.jpg", car_forward_diff)
 

@@ -3,8 +3,23 @@
   <component name="ChangeListManager">
     <list default="true" id="55d253e6-0bf4-445a-89ee-31e5474f421a" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.txt" beforeDir="false" afterPath="$PROJECT_DIR$/README.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/seam_carving.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bench/bench_backward_diff.png" beforeDir="false" afterPath="$PROJECT_DIR$/bench/bench_backward_diff.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bench/bench_forward_diff.png" beforeDir="false" afterPath="$PROJECT_DIR$/bench/bench_forward_diff.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/car/car_backward_diff.png" beforeDir="false" afterPath="$PROJECT_DIR$/car/car_backward_diff.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/car/car_forward_diff.png" beforeDir="false" afterPath="$PROJECT_DIR$/car/car_forward_diff.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dolphin/dolphin_diff_1.png" beforeDir="false" afterPath="$PROJECT_DIR$/dolphin/dolphin_diff_1.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dolphin/dolphin_diff_2.png" beforeDir="false" afterPath="$PROJECT_DIR$/dolphin/dolphin_diff_2.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fig5_extra1.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/fig5_extra1.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fig8Comp_backward_08_extra1.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/fig8Comp_backward_08_extra1.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fig8Comp_forward_08_extra1.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/fig8Comp_forward_08_extra1.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fig8d_07_extra1.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/fig8d_07_extra1.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fig8f_07_extra1.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/fig8f_07_extra1.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fig9Comp_backward_08_extra1.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/fig9Comp_backward_08_extra1.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fig9Seam_forward_08.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/fig9Seam_forward_08_extra1.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/island/island_diff.png" beforeDir="false" afterPath="$PROJECT_DIR$/island/island_diff.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/quantitative_comparison.py" beforeDir="false" afterPath="$PROJECT_DIR$/quantitative_comparison.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/seam_carving.py" beforeDir="false" afterPath="$PROJECT_DIR$/seam_carving.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -16,7 +31,7 @@
     <session id="-409537792">
       <usages-collector id="statistics.lifecycle.project">
         <counts>
-          <entry key="project.closed" value="9" />
+          <entry key="project.closed" value="10" />
           <entry key="project.open.time.1" value="1" />
           <entry key="project.open.time.10" value="1" />
           <entry key="project.open.time.2" value="2" />
@@ -30,34 +45,34 @@
       <usages-collector id="statistics.file.extensions.open">
         <counts>
           <entry key="JPG" value="1" />
-          <entry key="jpg" value="172" />
-          <entry key="png" value="328" />
-          <entry key="py" value="92" />
+          <entry key="jpg" value="225" />
+          <entry key="png" value="341" />
+          <entry key="py" value="97" />
           <entry key="pyx" value="2" />
-          <entry key="txt" value="6" />
+          <entry key="txt" value="7" />
           <entry key="yml" value="1" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
         <counts>
-          <entry key="Image" value="501" />
-          <entry key="PLAIN_TEXT" value="8" />
-          <entry key="Python" value="92" />
+          <entry key="Image" value="567" />
+          <entry key="PLAIN_TEXT" value="9" />
+          <entry key="Python" value="97" />
           <entry key="YAML" value="1" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
           <entry key="dummy" value="20" />
-          <entry key="py" value="21963" />
+          <entry key="py" value="22472" />
           <entry key="pyx" value="22" />
-          <entry key="txt" value="1715" />
+          <entry key="txt" value="1795" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="PLAIN_TEXT" value="1757" />
-          <entry key="Python" value="21963" />
+          <entry key="PLAIN_TEXT" value="1837" />
+          <entry key="Python" value="22472" />
         </counts>
       </usages-collector>
     </session>
@@ -66,70 +81,7 @@
     <favorites_list name="seam_carving" />
   </component>
   <component name="FileEditorManager">
-    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/seam_carving.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-337">
-              <caret line="74" column="15" selection-start-line="74" selection-start-column="4" selection-end-line="74" selection-end-column="15" />
-              <folding>
-                <element signature="e#0#37#0" expanded="true" />
-                <marker date="1582503019674" expanded="true" signature="3428:5767" ph="..." />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/fig5.jpg">
-          <provider selected="true" editor-type-id="images" />
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/fig8c_07.jpg">
-          <provider selected="true" editor-type-id="images" />
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/fig8Seam_backward_08.jpg">
-          <provider selected="true" editor-type-id="images" />
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/fig8Seam_forward_08.jpg">
-          <provider selected="true" editor-type-id="images" />
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/fig8Comp_backward_08.jpg">
-          <provider selected="true" editor-type-id="images" />
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/fig8Comp_forward_08.jpg">
-          <provider selected="true" editor-type-id="images" />
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/fig8d_07.jpg">
-          <provider selected="true" editor-type-id="images" />
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/fig8f_07.jpg">
-          <provider selected="true" editor-type-id="images" />
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/README.txt">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="330">
-              <caret line="22" column="19" selection-start-line="22" selection-start-column="19" selection-end-line="22" selection-end-column="19" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-    </leaf>
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300" />
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -192,13 +144,15 @@
         <option value="$PROJECT_DIR$/main.py" />
         <option value="$PROJECT_DIR$/README.txt" />
         <option value="$PROJECT_DIR$/seam_carving.py" />
+        <option value="$PROJECT_DIR$/quantitative_comparison.py" />
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds">
+  <component name="ProjectFrameBounds" extendedState="6">
+    <option name="x" value="65" />
     <option name="y" value="23" />
-    <option name="width" value="1680" />
-    <option name="height" value="953" />
+    <option name="width" value="1545" />
+    <option name="height" value="947" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
@@ -216,6 +170,11 @@
               <item name="seam_carving" type="b2602c69:ProjectViewProjectNode" />
               <item name="seam_carving" type="462c0819:PsiDirectoryNode" />
             </path>
+            <path>
+              <item name="seam_carving" type="b2602c69:ProjectViewProjectNode" />
+              <item name="seam_carving" type="462c0819:PsiDirectoryNode" />
+              <item name="car" type="462c0819:PsiDirectoryNode" />
+            </path>
           </expand>
           <select />
         </subPane>
@@ -224,7 +183,7 @@
     </panes>
   </component>
   <component name="PropertiesComponent">
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1582502431406" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1582510853841" />
     <property name="project.structure.last.edited" value="Project" />
     <property name="project.structure.proportion" value="0.0" />
     <property name="project.structure.side.proportion" value="0.0" />
@@ -258,7 +217,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python.test">
+  <component name="RunManager" selected="Python.quantitative_comparison">
     <configuration name="Unnamed" type="PythonConfigurationType" factoryName="Python">
       <module name="seam_carving" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -322,7 +281,7 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="test (1)" type="PythonConfigurationType" factoryName="Python" temporary="true">
+    <configuration name="quantitative_comparison" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="seam_carving" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -330,11 +289,11 @@
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
       <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/pyramid" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/pyramid/test.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/quantitative_comparison.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -387,19 +346,19 @@
     </configuration>
     <list>
       <item itemvalue="Python.Unnamed" />
-      <item itemvalue="Python.test (1)" />
       <item itemvalue="Python.test" />
       <item itemvalue="Python.playground" />
       <item itemvalue="Python.add" />
       <item itemvalue="Python.test (2)" />
+      <item itemvalue="Python.quantitative_comparison" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.quantitative_comparison" />
         <item itemvalue="Python.test" />
         <item itemvalue="Python.test (2)" />
         <item itemvalue="Python.playground" />
         <item itemvalue="Python.add" />
-        <item itemvalue="Python.test (1)" />
       </list>
     </recent_temporary>
   </component>
@@ -644,7 +603,7 @@
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1680" height="953" extended-state="6" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.49683145" visible="true" weight="0.17582418" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.49683145" visible="true" weight="0.17582418" />
       <window_info id="Structure" order="1" sideWeight="0.50332594" side_tool="true" weight="0.2147915" />
       <window_info id="Designer" order="2" />
       <window_info id="Image Layers" order="3" />
@@ -656,16 +615,16 @@
       <window_info id="Job Explorer" order="9" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.3282636" />
-      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49803305" weight="0.3475682" />
-      <window_info anchor="bottom" id="Debug" order="3" sideWeight="0.4980794" weight="0.38078293" />
+      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49803305" weight="0.3472706" />
+      <window_info anchor="bottom" id="Debug" order="3" sideWeight="0.4980794" weight="0.37979093" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="DB Execution Console" order="7" />
-      <window_info active="true" anchor="bottom" id="Terminal" order="8" sideWeight="0.49929377" visible="true" weight="0.26248547" />
+      <window_info anchor="bottom" id="Terminal" order="8" sideWeight="0.49929377" visible="true" weight="0.42624855" />
       <window_info anchor="bottom" id="Event Log" order="9" sideWeight="0.50192064" side_tool="true" weight="0.45500633" />
       <window_info anchor="bottom" id="Console" order="10" />
-      <window_info anchor="bottom" id="Version Control" order="11" weight="0.22737819" />
+      <window_info anchor="bottom" id="Version Control" order="11" weight="0.22648084" />
       <window_info anchor="bottom" id="Messages" order="12" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
@@ -725,14 +684,17 @@
     </breakpoint-manager>
     <watches-manager>
       <configuration name="PythonConfigurationType">
-        <watch expression="car_forward_target.shape" language="Python" />
-        <watch expression="car_forward_result.shape" language="Python" />
-        <watch expression="cv2.imread('/dolphin/dolphin.png')" language="Python" />
+        <watch expression="np.sum(diff)" language="Python" />
       </configuration>
     </watches-manager>
   </component>
   <component name="debuggerHistoryManager">
     <expressions id="watch">
+      <expression>
+        <expression-string>np.sum(diff)</expression-string>
+        <language-id>Python</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
       <expression>
         <expression-string>cv2.imread('/dolphin/dolphin.png')</expression-string>
         <language-id>Python</language-id>
@@ -778,94 +740,9 @@
         <language-id>Python</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
-      <expression>
-        <expression-string>dolphin_result.shape</expression-string>
-        <language-id>Python</language-id>
-        <evaluation-mode>EXPRESSION</evaluation-mode>
-      </expression>
     </expressions>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/dolphin/dolphin_stretch_2_result.png">
-      <provider selected="true" editor-type-id="images" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/island_diff.png" />
-    <entry file="file://$PROJECT_DIR$/bars.png" />
-    <entry file="file://$PROJECT_DIR$/dolphin/dolphin_diff_1.png">
-      <provider selected="true" editor-type-id="images" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/dolphin_diff.png" />
-    <entry file="file://$PROJECT_DIR$/playground.py" />
-    <entry file="file://$PROJECT_DIR$/dolphin/dolphin_diff_2.png">
-      <provider selected="true" editor-type-id="images" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/bench/bench_original.png">
-      <provider selected="true" editor-type-id="images" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/bench_backward_mask_result.png" />
-    <entry file="file://$PROJECT_DIR$/car_up_forward_2.png" />
-    <entry file="file://$PROJECT_DIR$/car_up_forward.png" />
-    <entry file="file://$PROJECT_DIR$/car_up_backward.png" />
-    <entry file="file://$PROJECT_DIR$/bench/bench_backward_target.png">
-      <provider selected="true" editor-type-id="images" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/bench/bench_backward_diff.png">
-      <provider selected="true" editor-type-id="images" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/bench/bench_backward_result.png">
-      <provider selected="true" editor-type-id="images" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/bench/bench_forward_diff.png">
-      <provider selected="true" editor-type-id="images" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/bench/bench_backward_mask_result.png">
-      <provider selected="true" editor-type-id="images" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/bench/bench_forward_mask_result.png">
-      <provider selected="true" editor-type-id="images" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/car/elongated_car_forward_result.png" />
-    <entry file="file://$PROJECT_DIR$/util.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="760">
-          <caret line="126" column="42" selection-start-line="126" selection-start-column="42" selection-end-line="126" selection-end-column="42" />
-          <folding>
-            <marker date="1582402142211" expanded="true" signature="1066:1467" ph="..." />
-            <marker date="1582402142211" expanded="true" signature="1737:2163" ph="..." />
-            <marker date="1582402142211" expanded="true" signature="2205:2210" ph="..." />
-            <marker date="1582402142211" expanded="true" signature="5243:5347" ph="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/car/car_stretch_forward.png">
-      <provider selected="true" editor-type-id="images" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/car/car_original.png">
-      <provider selected="true" editor-type-id="images" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/car/car_backward_target.png">
-      <provider selected="true" editor-type-id="images" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/car/car_forward_target.png">
-      <provider selected="true" editor-type-id="images" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/car/car_forward_diff.png">
-      <provider selected="true" editor-type-id="images" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/car/car_expand-result.png" />
-    <entry file="file://$PROJECT_DIR$/car/elongated_car_backward_result.png" />
-    <entry file="file://$PROJECT_DIR$/car/car_backward_diff.png">
-      <provider selected="true" editor-type-id="images" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/~$README.txt" />
-    <entry file="file://$PROJECT_DIR$/cs6475.yml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="135">
-          <caret line="9" selection-start-line="9" selection-end-line="9" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/remove_seams.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="45">
@@ -902,56 +779,163 @@
     <entry file="file://$PROJECT_DIR$/island/island_result.png">
       <provider selected="true" editor-type-id="images" />
     </entry>
+    <entry file="file://$PROJECT_DIR$/bench/bench_forward_result.png">
+      <provider selected="true" editor-type-id="images" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/util.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="558">
+          <caret line="126" column="42" selection-start-line="126" selection-start-column="42" selection-end-line="126" selection-end-column="42" />
+          <folding>
+            <marker date="1582402142211" expanded="true" signature="1066:1467" ph="..." />
+            <marker date="1582402142211" expanded="true" signature="1737:2163" ph="..." />
+            <marker date="1582402142211" expanded="true" signature="2205:2210" ph="..." />
+            <marker date="1582402142211" expanded="true" signature="5243:5347" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/bench/bench_original.png">
+      <provider selected="true" editor-type-id="images" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/README.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="75">
+          <caret line="5" selection-start-line="5" selection-end-line="5" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/fig9Seam_forward_08.jpg">
+      <provider selected="true" editor-type-id="images" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/fig9Seam_forward_08_extra1.jpg">
+      <provider selected="true" editor-type-id="images" />
+    </entry>
     <entry file="file://$PROJECT_DIR$/island/expected_island.png">
+      <provider selected="true" editor-type-id="images" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/dolphin/dolphinStretch1.png">
+      <provider selected="true" editor-type-id="images" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/fig8d_07_extra2.jpg">
+      <provider selected="true" editor-type-id="images" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/dolphin/dolphinStretch2.png">
+      <provider selected="true" editor-type-id="images" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/car/car_forward_target.png">
+      <provider selected="true" editor-type-id="images" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/bench/bench_backward_target.png">
       <provider selected="true" editor-type-id="images" />
     </entry>
     <entry file="file://$PROJECT_DIR$/bench/bench_forward_target.png">
       <provider selected="true" editor-type-id="images" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/bench/bench_forward_result.png">
+    <entry file="file://$PROJECT_DIR$/fig9Comp_backward_08_extra2.jpg">
       <provider selected="true" editor-type-id="images" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/README.txt">
+    <entry file="file://$PROJECT_DIR$/fig8Comp_backward_08_extra2.jpg">
+      <provider selected="true" editor-type-id="images" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/fig8Comp_forward_08_extra2.jpg">
+      <provider selected="true" editor-type-id="images" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/car/car_backward_target.png">
+      <provider selected="true" editor-type-id="images" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/seam_carving.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="330">
-          <caret line="22" column="19" selection-start-line="22" selection-start-column="19" selection-end-line="22" selection-end-column="19" />
+        <state relative-caret-position="141">
+          <caret line="90" column="66" selection-start-line="90" selection-start-column="66" selection-end-line="90" selection-end-column="66" />
+          <folding>
+            <element signature="e#0#37#0" expanded="true" />
+            <marker date="1582506958299" expanded="true" signature="3428:5869" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/quantitative_comparison.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="249">
+          <caret line="22" column="44" lean-forward="true" selection-start-line="22" selection-start-column="44" selection-end-line="22" selection-end-column="44" />
+          <folding>
+            <element signature="e#0#10#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/fig5.jpg">
       <provider selected="true" editor-type-id="images" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/fig8d_07.jpg">
+    <entry file="file://$PROJECT_DIR$/fig5_extra1.jpg">
       <provider selected="true" editor-type-id="images" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/fig8f_07.jpg">
+    <entry file="file://$PROJECT_DIR$/fig5_extra2.jpg">
       <provider selected="true" editor-type-id="images" />
     </entry>
     <entry file="file://$PROJECT_DIR$/fig8c_07.jpg">
       <provider selected="true" editor-type-id="images" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/fig8Seam_backward_08.jpg">
+    <entry file="file://$PROJECT_DIR$/fig8Comp_backward_08.jpg">
       <provider selected="true" editor-type-id="images" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/fig8Comp_backward_08.jpg">
+    <entry file="file://$PROJECT_DIR$/fig8Comp_backward_08_extra1.jpg">
+      <provider selected="true" editor-type-id="images" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/fig8Comp_backward_08_extra2.jpg">
       <provider selected="true" editor-type-id="images" />
     </entry>
     <entry file="file://$PROJECT_DIR$/fig8Comp_forward_08.jpg">
       <provider selected="true" editor-type-id="images" />
     </entry>
+    <entry file="file://$PROJECT_DIR$/fig8Comp_forward_08_extra1.jpg">
+      <provider selected="true" editor-type-id="images" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/fig8Comp_forward_08_extra2.jpg">
+      <provider selected="true" editor-type-id="images" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/fig8d_07.jpg">
+      <provider selected="true" editor-type-id="images" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/fig8d_07_extra1.jpg">
+      <provider selected="true" editor-type-id="images" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/fig8d_07_extra2.jpg">
+      <provider selected="true" editor-type-id="images" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/fig8f_07.jpg">
+      <provider selected="true" editor-type-id="images" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/fig8f_07_extra1.jpg">
+      <provider selected="true" editor-type-id="images" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/fig8f_07_extra2.jpg">
+      <provider selected="true" editor-type-id="images" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/fig8Seam_backward_08.jpg">
+      <provider selected="true" editor-type-id="images" />
+    </entry>
     <entry file="file://$PROJECT_DIR$/fig8Seam_forward_08.jpg">
       <provider selected="true" editor-type-id="images" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/seam_carving.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-337">
-          <caret line="74" column="15" selection-start-line="74" selection-start-column="4" selection-end-line="74" selection-end-column="15" />
-          <folding>
-            <element signature="e#0#37#0" expanded="true" />
-            <marker date="1582503019674" expanded="true" signature="3428:5767" ph="..." />
-          </folding>
-        </state>
-      </provider>
+    <entry file="file://$PROJECT_DIR$/fig9Comp_backward_08.jpg">
+      <provider selected="true" editor-type-id="images" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/fig9Comp_backward_08_extra1.jpg">
+      <provider selected="true" editor-type-id="images" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/fig9Comp_backward_08_extra2.jpg">
+      <provider selected="true" editor-type-id="images" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/fig9Comp_forward_08.jpg">
+      <provider selected="true" editor-type-id="images" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/fig9Comp_forward_08_extra1.jpg">
+      <provider selected="true" editor-type-id="images" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/fig9Comp_forward_08_extra2.jpg">
+      <provider selected="true" editor-type-id="images" />
     </entry>
   </component>
   <component name="masterDetails">
